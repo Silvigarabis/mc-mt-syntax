@@ -1,0 +1,106 @@
+//this file is under GNU GENERAL PUBLIC LICENSE Version 3, for more info, see https://www.gnu.org/licenses/gpl-3.0.en.html
+{
+    name: ["Minecraft Function", ".mcfunction"]
+    colors: [
+        "condHeader", #FFEDED, #443034
+        "error", #F50000, #BC3F3C
+        "comment", #8c8c8c, #808080
+        
+        "command", #008b45, #9acd32
+        "subcommand", #4169e1, #8876BA
+        "unknownCmd", #8470ff, #CC7832
+        
+        "selector", #9acd32, #eec900
+        "selectorArgs", #9e880d, #6080b0
+
+        "variable", #407095, #6A8099
+        "number", #1750EB, #6897BB
+        "funName", #C57633, #FFC66D
+        "name", #9e880d, #bbb529
+        "meta", #9e880d, #bbb529
+        
+        //？？？
+        "l", #66ccff, #66ccff
+        
+    ]
+    
+    //普通注释匹配（没用
+    comment: {startsWith: "#", insertSpace: true, addToContains: false }
+  
+    //匹配自己设置的特殊注释(可能用不上)
+    lineBackground: {match: /^#{1,}\s*.*([=\{\}\[\]!:0-9]|if|unless|then|do).*/, color: "condHeader" }
+    
+    //检测错误注释(那种井号前边有空格的注释
+    lineBackground: {match: /^\s+#.*$/, color: "error" }
+
+    //匹配普通注释(没啥好说的
+    lineBackground: {match: /^#.*$/, color: "comment" }
+
+    contains: [
+        
+        //匹配/scoreboard players operation
+        //可以判定操作符是否有误
+        {match: /\b(scoreboard +players) +(operation)(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))(?: +([^\s]+)(?: +(?:(><|\+=|-=|\*=|\/=|%=|[=<>])|(\S+))(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))(?: +([^\s]+))?)?)?)?)?/, 1: "command", 2: "subcommand", 3: "selector", 4: "selectorArgs", 5: "name", 6: "variable", 7: "operator", 8: "error", 9: "selector", 10: "selectorArgs", 11: "name", 12: "variable" }
+        
+        //匹配/scoreboard players
+        {match: /\b(scoreboard +players)(?:\x20+(\w+)(?:\x20+(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))(?:\x20+([^\s]+)(?:\x20+(\d+))?)?)?)?/, 1: "command", 2: "subcommand", 3: "selector", 4: "selectorArgs", 5: "name", 6: "variable", 7: "number"}
+
+        //匹配/scoreboard objectives
+        {match: /\b(scoreboard +objectives)(?: +(\w+)(?: +([^\s]+)(?: +(\w+)(?: +([^\n]+))?)?)?)?/, 1: "command", 2: "subcommand", 3: "variable", 4: "meta", 5: "meta"}
+        
+        //匹配/function
+        {match: /(function) +(\S+)/, 1: "command", 2: "funName"}
+        
+        //匹配已知命令
+        {match: keywordsToRegex(
+            //教育版
+            "ability immutableworld worldbuilder"
+            
+            //原版
+            "camerashake fog music playanimation playsound stopsound"
+            "clearspawnpoint spawnpoint setworldspawn"
+            "xp gamemode kick ride"
+            "me tell tellraw title titleraw say msg"
+            "setblock fill clone"
+            "replaceitem give clear enchant"
+            "weather difficulty gamerule"
+            "kill damage effect"
+            "testfor testforblock testforblocks"
+            "scoreboard execute tp teleport summon spreadplayers"
+            "function event tag scoreboard gametest"
+            "schedule"
+            ), 0: "command"
+        }
+        
+        //匹配目标选择器
+        {match: /@[aeprsvc](\[.*?\])?/, 0: "selector", 1: "selectorArgs" }
+        
+        //匹配常规命令
+        { match: /(?<=\n)\w+/, 0: "unknownCmd" }
+
+        //匹配字符串(此处复制mt管理器自带语法文件中shell.mtsx的部分内容，不是我写的)
+        {builtin: #SINGLE_QUOTED_STRING#}
+        {
+            color: "string"
+            start: {match: /"/}
+            end: {match: /(?m)"|$/}
+            contains: [
+                // 复制上面的
+                {match: /\$([a-zA-Z_]\w*|[?#*$@0-9])/, 0: "variable"}
+                {
+                    color: "variable"
+                    start: {match: /\$\{/}
+                    end: {match: /\}/}
+                    contains: [
+                        {match: /\\./, 0: "strEscape"}
+                        {builtin: #QUOTED_STRING#}
+                    ]
+                }
+            ]
+        }
+    ]
+}
+{
+    //目标选择器解析（还没写）
+    name: #COMMAND_SELECTOR#
+}
