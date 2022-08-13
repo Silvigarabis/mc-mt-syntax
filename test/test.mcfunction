@@ -22,11 +22,9 @@
 ((?:(?:\^-?\d+(?:\.\d+)?)|\^)(?: +(?:\^-?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?-?\d+(?:\.\d+)?)|~)(?: +(?:~?-?\d+(?:\.\d+)?)| *~){0,2})
 
 execute @s ~ ~3 ~-6 detect ^7 ^-87 ^8 nenwn2kk2_jejnene -28
-
-(\b(?:\^-?\d+(?:\.\d+)?)|\^)( +(?:\^-?\d+(?:\.\d+)?)| *\^){2}
          ^2 ^5 ^3
          
-         
+         ~~~
          
 #/execute
 (execute)(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))(?: +((?:(?:\^-?\d+(?:\.\d+)?)|\^)(?: +(?:\^-?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?-?\d+(?:\.\d+)?)|~)(?: +(?:~?-?\d+(?:\.\d+)?)| *~){0,2})(?: +(detect)(?: +((?:(?:\^-?\d+(?:\.\d+)?)|\^)(?: +(?:\^-?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?-?\d+(?:\.\d+)?)|~)(?: +(?:~?-?\d+(?:\.\d+)?)| *~){0,2})(?: +(\S+)(?: +(-?\d+))?)?)?)?)?)?
@@ -40,3 +38,12 @@ execute @s ~ ~3 ~-6 detect ^7 ^-87 ^8 nenwn2kk2_jejnene -28
 7: block (string)
 8: data ( number )
 
+#测试
+(test )((a){1,})
+
+test a a a a a a a a
+
+#/execute new ver
+execute if blocks ~~~~~~ ~~~ all if score @s mmm matches 3.. if score @a[tag=hhh] var_1 = @s var_2 if score @s scohhhre = @s djdjjr if score as sss matches 29 positioned as @s if entity as at @r if block ~~~ becrock 4444 unless block ~ ~-9862.228 ~ bbbbb -82882 run say hello world!
+
+(\b(?:\^-?\d+(?:\.\d+)?)|\^)( +(?:\^-?\d+(?:\.\d+)?)| *\^){2}

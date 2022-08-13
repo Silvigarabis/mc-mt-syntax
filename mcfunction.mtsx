@@ -38,15 +38,41 @@
 
     contains: [
         
-        //匹配1.19之前的execute(你问之后的？我还在研究)
-        {match:/(execute)(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))(?: +((?:(?:\^-?\d+(?:\.\d+)?)|\^)(?: +(?:\^-?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?-?\d+(?:\.\d+)?)|~)(?: +(?:~?-?\d+(?:\.\d+)?)| *~){0,2})(?: +(detect)(?: +((?:(?:\^-?\d+(?:\.\d+)?)|\^)(?: +(?:\^-?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?-?\d+(?:\.\d+)?)|~)(?: +(?:~?-?\d+(?:\.\d+)?)| *~){0,2})(?: +(\S+)(?: +(-?\d+))?)?)?)?)?)?/, 1: "command", 2: "selector", 3: "selectorArgs", 4: "name", 5: "coords", 6: "subcommand", 7: "coords", 8: "block", 9: "number" }
         
+        
+        //匹配/execute
+        //新版和旧版只能用一个
+        //如果要混合使用请去掉新版中的兼容旧版的匹配的注释
+        
+        //旧版
+        //{match:/(execute)(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))(?: +((?:(?:\^-?\d+(?:\.\d+)?)|\^)(?: +(?:\^-?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?-?\d+(?:\.\d+)?)|~)(?: +(?:~?-?\d+(?:\.\d+)?)| *~){0,2})(?: +(detect)(?: +((?:(?:\^-?\d+(?:\.\d+)?)|\^)(?: +(?:\^-?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?-?\d+(?:\.\d+)?)|~)(?: +(?:~?-?\d+(?:\.\d+)?)| *~){0,2})(?: +(\S+)(?: +(-?\d+))?)?)?)?)?)?/, 1: "command", 2: "selector", 3: "selectorArgs", 4: "name", 5: "coords", 6: "subcommand", 7: "coords", 8: "block", 9: "number" }
+        
+        //新版
+        {
+            start:{match:/(execute)/, 1: "command"}
+            end:{match:/(?:(run)|\n)/, 1: "subcommand" }
+            contains: [
+                //positioned
+                {match:/ +(positioned)(?: +(?:(as)(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+)))?|((?:(?:\^-?\d+(?:\.\d+)?)|\^)(?: +(?:\^-?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?-?\d+(?:\.\d+)?)|~)(?: +(?:~?-?\d+(?:\.\d+)?)| *~){0,2})))?/, 1: "command", 2: "subcommand", 3: "selector", 4: "selectorArgs", 5: "name", 6: "coords"}
+                {match:/ +(as|at)(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+)))?/, 1: "command", 2: "selector", 3: "selectorArgs", 4: "name" }
+                {match:/ +(if|unless)(?: +(entity)(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+)))?)/, 1: "command", 2:
+"subcommand", 3: "selector", 4: "selectorArgs", 5: "name" }
+                {match:/ +(if|unless)(?: +(blocks)(?: +((?: *(?:(?:(?:\^-?\d+(?:\.\d+)?)|\^)(?: +(?:\^-?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?-?\d+(?:\.\d+)?)|~)(?: +(?:~?-?\d+(?:\.\d+)?)| *~){0,2})){0,2})(?: +((?:(?:\^-?\d+(?:\.\d+)?)|\^)(?: +(?:\^-?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?-?\d+(?:\.\d+)?)|~)(?: +(?:~?-?\d+(?:\.\d+)?)| *~){0,2})(?: +(all|masked))?)?)?)/, 1: "command", 2: "subcommand", 3: "coords", 4: "operator", 5: "meta" }
+                {match:/ +(if|unless)(?: +(block)(?: +((?:(?:\^-?\d+(?:\.\d+)?)|\^)(?: +(?:\^-?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?-?\d+(?:\.\d+)?)|~)(?: +(?:~?-?\d+(?:\.\d+)?)| *~){0,2})(?: (\w+)(?: +(?:(-?\d+)|(\[.*?\])))?)?)?)/, 1: "command", 2: "subcommand", 3: "coords", 4: "block", 5: "number", 6: "meta" }
+                {match:/ +(if|unless)(?: +(score)(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))(?: +([^\s]+)(?: +(?:(matches)(?: +(?:(-?\d+)?(\.{2})?(-?\d+)?))?|(?:(>=|<=|[=<>])|(\S+))(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))(?: +([^\s]+))?)?))?)?)?)?/, 1: "command", 2: "subcommand", 3: "selector", 4: "selectorArgs", 5: "name", 6: "variable", 7: "subcommand", 8: "number", 9: "operator", 10: "number", 11: "operator", 12: "error", 13: "selector", 14: "selectorArgs", 15: "name", 16: "variable" }
+                
+                //同时匹配旧版execute（可能会出bug）
+                {match:/(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))(?: +((?:(?:\^-?\d+(?:\.\d+)?)|\^)(?: +(?:\^-?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?-?\d+(?:\.\d+)?)|~)(?: +(?:~?-?\d+(?:\.\d+)?)| *~){0,2})(?: +(detect)(?: +((?:(?:\^-?\d+(?:\.\d+)?)|\^)(?: +(?:\^-?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?-?\d+(?:\.\d+)?)|~)(?: +(?:~?-?\d+(?:\.\d+)?)| *~){0,2})(?: +(\S+)(?: +(-?\d+))?)?)?)?)?)?/, 1: "selector", 2: "selectorArgs", 3: "name", 4: "coords", 5: "subcommand", 6: "coords", 7: "block", 8: "number" }
+
+            ]
+        }
+
         //匹配/scoreboard players operation
         //可以判定操作符是否有误
         {match: /\b(scoreboard +players) +(operation)(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))(?: +([^\s]+)(?: +(?:(><|\+=|-=|\*=|\/=|%=|[=<>])|(\S+))(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))(?: +([^\s]+))?)?)?)?)?/, 1: "command", 2: "subcommand", 3: "selector", 4: "selectorArgs", 5: "name", 6: "variable", 7: "operator", 8: "error", 9: "selector", 10: "selectorArgs", 11: "name", 12: "variable" }
         
         //匹配/scoreboard players
-        {match: /\b(scoreboard +players)(?:\x20+(\w+)(?:\x20+(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))(?:\x20+([^\s]+)(?:\x20+(\d+))?)?)?)?/, 1: "command", 2: "subcommand", 3: "selector", 4: "selectorArgs", 5: "name", 6: "variable", 7: "number"}
+        {match: /\b(scoreboard +players)(?:\x20+(\w+)(?:\x20+(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))(?:\x20+([^\s]+)(?:\x20+(-?\d+))?)?)?)?/, 1: "command", 2: "subcommand", 3: "selector", 4: "selectorArgs", 5: "name", 6: "variable", 7: "number"}
 
         //匹配/scoreboard objectives
         {match: /\b(scoreboard +objectives)(?: +(\w+)(?: +([^\s]+)(?: +(\w+)(?: +([^\n]+))?)?)?)?/, 1: "command", 2: "subcommand", 3: "variable", 4: "meta", 5: "meta"}
@@ -54,6 +80,54 @@
         //匹配/function
         {match: /(function) +(\S+)/, 1: "command", 2: "funName"}
         
+        //匹配/say
+        {
+            start: {match: /say/, 0: "command"}
+            end: {match:/\n/}
+            color: "string"
+        }
+        
+        //匹配/tellraw
+        {
+            start: {match: /tellraw/, 0: "command"}
+            end: {match: /\n/}
+            contains: [
+                {
+                    start: {match: /(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))/, 1:"selector", 2: "selectorArgs", 3: "name" }
+                    end: {match:/\n/}
+                    contains: [
+                        {builtin: #JAVA_QUOTED_STRING#}
+                        {builtin: #NORMAL_NUMBER#}
+                        {match: keywordsToRegex("true false null"), 0: "keyword"}
+                    ]
+                }
+            ]
+        }
+        
+        //匹配/titleraw
+        {
+            start: {match: /titleraw/, 0: "command"}
+            end: {match: /\n/}
+            contains: [
+                {
+                    start: {match: /(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))/, 1:"selector", 2: "selectorArgs", 3: "name" }
+                    end: {match:/\n/}
+                    contains: [
+                        {
+                            start: {match:/(?:actionbar|title|subtitle)/, 0: "subcommand"}
+                            end: {match:/\n/}
+                            contains: [
+                                {builtin: #JAVA_QUOTED_STRING#}
+                                {builtin: #NORMAL_NUMBER#}
+                                {match: keywordsToRegex("true false null"), 0: "keyword"}
+                            ]
+                        }
+                        {match: /(?:actionbar|title|subtitle|reset|clear|times)/, 0: "subcommand"}
+                    ]
+                }
+            ]
+        }
+
         //匹配已知命令
         {match: keywordsToRegex(
             //教育版
