@@ -10,13 +10,13 @@
 
 ## mcfunction支持
 
-|命令|高亮|纠错|
-|---|---|
-|scoreboard|y|只有operation中的操作符号|
-|function|y|x|
-|execute|y|x|
-|titleraw|y|原始JSON文本|
-|tellraw|y|原始JSON文本|
+|命令       |高亮|纠错（简单）               |
+|--------------------|-------|--------------------------------------------------|
+|scoreboard|y   |只有operation中的操作符号  |
+|function   |y   |x                             |
+|execute    |y   |x                            |
+|titleraw    |y   |原始JSON文本               |
+|tellraw     |y   |原始JSON文本               |
 
 支持大部分可在mcfunction中直接使用的命令的高亮（只能高亮命令本体）
 
