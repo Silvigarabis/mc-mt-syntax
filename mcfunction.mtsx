@@ -22,9 +22,6 @@
         "block" > "meta"
         "coords", #66ccff, #66ccff
         
-        //？？？
-        "l", #66ccff, #66ccff
-        
     ]
     
     //普通注释匹配（没用
