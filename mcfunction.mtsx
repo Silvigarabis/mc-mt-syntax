@@ -62,7 +62,7 @@
                 {match:/ +(if|unless)(?: +(score)(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))(?: +([^\s]+)(?: +(?:(matches)(?: +(?:(-?\d+)?(\.{2})?(-?\d+)?))?|(?:(>=|<=|[=<>])|(\S+))(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))(?: +([^\s]+))?)?))?)?)?)?/, 1: "command", 2: "subcommand", 3: "selector", 4: "selectorArgs", 5: "name", 6: "variable", 7: "subcommand", 8: "number", 9: "operator", 10: "number", 11: "operator", 12: "error", 13: "selector", 14: "selectorArgs", 15: "name", 16: "variable" }
                 
                 //同时匹配旧版execute（可能会出bug）
-                {match:/(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))(?: +((?:(?:\^-?\d+(?:\.\d+)?)|\^)(?: +(?:\^-?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?-?\d+(?:\.\d+)?)|~)(?: +(?:~?-?\d+(?:\.\d+)?)| *~){0,2})(?: +(detect)(?: +((?:(?:\^-?\d+(?:\.\d+)?)|\^)(?: +(?:\^-?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?-?\d+(?:\.\d+)?)|~)(?: +(?:~?-?\d+(?:\.\d+)?)| *~){0,2})(?: +(\S+)(?: +(-?\d+))?)?)?)?)?)?/, 1: "selector", 2: "selectorArgs", 3: "name", 4: "coords", 5: "subcommand", 6: "coords", 7: "block", 8: "number" }
+                //{match:/(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))(?: +((?:(?:\^-?\d+(?:\.\d+)?)|\^)(?: +(?:\^-?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?-?\d+(?:\.\d+)?)|~)(?: +(?:~?-?\d+(?:\.\d+)?)| *~){0,2})(?: +(detect)(?: +((?:(?:\^-?\d+(?:\.\d+)?)|\^)(?: +(?:\^-?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?-?\d+(?:\.\d+)?)|~)(?: +(?:~?-?\d+(?:\.\d+)?)| *~){0,2})(?: +(\S+)(?: +(-?\d+))?)?)?)?)?)?/, 1: "selector", 2: "selectorArgs", 3: "name", 4: "coords", 5: "subcommand", 6: "coords", 7: "block", 8: "number" }
 
             ]
         }
@@ -71,6 +71,9 @@
         //可以判定操作符是否有误
         {match: /\b(scoreboard +players) +(operation)(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))(?: +([^\s]+)(?: +(?:(><|\+=|-=|\*=|\/=|%=|[=<>])|(\S+))(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))(?: +([^\s]+))?)?)?)?)?/, 1: "command", 2: "subcommand", 3: "selector", 4: "selectorArgs", 5: "name", 6: "variable", 7: "operator", 8: "error", 9: "selector", 10: "selectorArgs", 11: "name", 12: "variable" }
         
+        //匹配/scoreboard players random
+        {match: /\b(scoreboard +players +)(random)(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))(?: +([^\s]+)(?: (-?\d+)(?: +(-?\d+))?)?)?)?/, 1: "command", 2: "subcommand", 3: "selector", 4: "selectorArgs", 5: "name", 6: "variable", 7: "number", 8: "number"}
+
         //匹配/scoreboard players
         {match: /\b(scoreboard +players)(?:\x20+(\w+)(?:\x20+(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))(?:\x20+([^\s]+)(?:\x20+(-?\d+))?)?)?)?/, 1: "command", 2: "subcommand", 3: "selector", 4: "selectorArgs", 5: "name", 6: "variable", 7: "number"}
 
@@ -90,11 +93,11 @@
         //匹配/tellraw
         {
             start: {match: /tellraw/, 0: "command"}
-            end: {match: /\n/}
+            end: {match: /.(?=\n)/}
             contains: [
                 {
                     start: {match: /(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))/, 1:"selector", 2: "selectorArgs", 3: "name" }
-                    end: {match:/\n/}
+                    end: {match:/.(?=.\n)/}
                     contains: [
                         {builtin: #JAVA_QUOTED_STRING#}
                         {builtin: #NORMAL_NUMBER#}
@@ -107,15 +110,15 @@
         //匹配/titleraw
         {
             start: {match: /titleraw/, 0: "command"}
-            end: {match: /\n/}
+            end: {match: /.(?=\n)/}
             contains: [
                 {
                     start: {match: /(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))/, 1:"selector", 2: "selectorArgs", 3: "name" }
-                    end: {match:/\n/}
+                    end: {match:/.(?=.\n)/}
                     contains: [
                         {
                             start: {match:/(?:actionbar|title|subtitle)/, 0: "subcommand"}
-                            end: {match:/\n/}
+                            end: {match:/.(?=..\n)/}
                             contains: [
                                 {builtin: #JAVA_QUOTED_STRING#}
                                 {builtin: #NORMAL_NUMBER#}
