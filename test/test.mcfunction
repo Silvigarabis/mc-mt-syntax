@@ -47,3 +47,39 @@ test a a a a a a a a
 execute if blocks ~~~~~~ ~~~ all if score @s mmm matches 3.. if score @a[tag=hhh] var_1 = @s var_2 if score @s scohhhre = @s djdjjr if score as sss matches 29 positioned as @s if entity as at @r if block ~~~ becrock 4444 unless block ~ ~-9862.228 ~ bbbbb -82882 run say hello world!
 
 (\b(?:\^-?\d+(?:\.\d+)?)|\^)( +(?:\^-?\d+(?:\.\d+)?)| *\^){2}
+
+#匹配id
+[A-Za-z0-9_:]{1,}
+
+#/replaceitem entity
+replaceitem entity @s slot.xxxxxxx 0 [keep|replace] <item> [data] [component]
+(replaceitem) +(?:(entity)(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))(?: +(?:(slot\.[\S\.]{1,})|([^\s]+))(?: +(\d+)(?:(?: +(keep|replace))? +(?:([A-Za-z0-9_:]{1,}))(?: +(\d+))?)?)?)?)?)
+(replaceitem) +(?:(entity)(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))(?: +(?:(slot(?:\.(?:(?:weapon(?:\.(?:offhand|mainhand))?|armor(?:\.(?:chest|legs|feet|head))?|enderchest|hotbar|inventory|saddle|chest|equippable)))?)|(\S+))(?: +(\d+)(?:(?: +(keep|replace))? +(?:([A-Za-z0-9_:]{1,}))(?: +(\d+))?)?)?)?)?)
+slot(?:\.(?:(?:weapon(?:\.(?:offhand|mainhand))?|armor(?:\.(?:chest|legs|feet|head))?|enderchest|hotbar|inventory|saddle|chest|equippable)))?
+1: command
+2: subcommand
+3: selector
+4: selectorArgs
+5: name
+6: meta
+7: error
+8: number
+9: meta / subcommand
+10: item
+11: number
+
+#/replaceitem block ~ ~ ~ slot.container 2 replace keep 3
+
+replaceitem block ~ ~ ~ slot.container
+(replaceitem)(?: +(block)(?: +((?:(?:\^-?\d+(?:\.\d+)?)|\^)(?: +(?:\^-?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?-?\d+(?:\.\d+)?)|~)(?: +(?:~?-?\d+(?:\.\d+)?)| *~){0,2})(?: +(?:(slot.container)|(\S+))(?: +(\d+)(?: +(\d+)(?:(?: +(keep|replace))? +(?:([A-Za-z0-9_:]{1,}))(?: +(\d+)(?: +(\d+))?)?)?)?)?)?)?)?
+(replaceitem)(?: +(block)(?: +((?:(?:\^-?\d+(?:\.\d+)?)|\^)(?: +(?:\^-?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?-?\d+(?:\.\d+)?)|~)(?: +(?:~?-?\d+(?:\.\d+)?)| *~){0,2})(?: +(?:(slot.container)|(\S+))(?: +(\d+)(?: +(?:(keep|replace) +)?(?:([A-Za-z0-9_:]{1,}))(?: +(\d+)(?: +(\d+))?)?)?)?)?)?)
+1: command
+2: subcommand
+3: coords
+4: meta
+5: error
+6: number
+6: subcommand
+7: meta/item
+8: number
+9: variable

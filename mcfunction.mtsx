@@ -20,6 +20,7 @@
         "name", #9e880d, #bbb529
         "meta", #9e880d, #bbb529
         "block" > "meta"
+        "item" > "meta"
         "coords", #66ccff, #66ccff
         
     ]
@@ -90,14 +91,42 @@
             color: "string"
         }
         
+        //匹配/tell
+        {
+            start: {match: /(tell)(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+)))/, 1: "command", 2: "selector", 3: "selectorArgs", 4: "name"}
+            end: {match: /\n/}
+            color: "string"
+        }
+        
+        //匹配/replaceitem entity
+        {
+            start: {match: /(replaceitem)(?: +(entity)(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))(?: +(?:(slot(?:\.(?:(?:weapon(?:\.(?:offhand|mainhand))?|armor(?:\.(?:chest|legs|feet|head))?|enderchest|hotbar|inventory|saddle|chest|equippable)))?)|([^\s]+))(?: +(\d+)(?: +(?:(keep|replace) +)?(?:([A-Za-z0-9_:]{1,}))(?: +(\d+)(?: +(\d+))?)?)?)?)?)?)/, 1: "command", 2: "subcommand", 3: "selector", 4: "selectorArgs", 5: "name", 6: "meta", 7: "error", 8: "number", 9: "subcommand", 10: "item", 11: "number", 12: "variable" }
+            end: {match: /\n/}
+            contains: [
+                {builtin: #JAVA_QUOTED_STRING#}
+                {builtin: #NORMAL_NUMBER#}
+                {match: keywordsToRegex("true false null"), 0: "keyword"}
+            ]
+        }
+        
+        // /replaceitem block
+        {
+            start: { match: /(replaceitem)(?: +(block)(?: +((?:(?:\^-?\d+(?:\.\d+)?)|\^)(?: +(?:\^-?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?-?\d+(?:\.\d+)?)|~)(?: +(?:~?-?\d+(?:\.\d+)?)| *~){0,2})(?: +(?:(slot.container)|(\S+))(?: +(\d+)(?: +(?:(keep|replace) +)?(?:([A-Za-z0-9_:]{1,}))(?: +(\d+)(?: +(\d+))?)?)?)?)?)?)/, 1: "command", 2: "subcommand", 3: "coords", 4: "meta", 5: "error", 6: "number", 7: "subcommand", 8: "item", 9: "number", 10: "variable" }
+            end: {match: /\n/}
+            contains: [
+                {builtin: #JAVA_QUOTED_STRING#}
+                {builtin: #NORMAL_NUMBER#}
+                {match: keywordsToRegex("true false null"), 0: "keyword"}
+            ]
+        }
         //匹配/tellraw
         {
             start: {match: /tellraw/, 0: "command"}
-            end: {match: /.(?=\n)/}
+            end: {match: /\n/}
             contains: [
                 {
                     start: {match: /(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))/, 1:"selector", 2: "selectorArgs", 3: "name" }
-                    end: {match:/.(?=.\n)/}
+                    end: {match:/.(?=\n)/}
                     contains: [
                         {builtin: #JAVA_QUOTED_STRING#}
                         {builtin: #NORMAL_NUMBER#}
@@ -110,15 +139,15 @@
         //匹配/titleraw
         {
             start: {match: /titleraw/, 0: "command"}
-            end: {match: /.(?=\n)/}
+            end: {match: /\n/}
             contains: [
                 {
                     start: {match: /(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))/, 1:"selector", 2: "selectorArgs", 3: "name" }
-                    end: {match:/.(?=.\n)/}
+                    end: {match:/.(?=\n)/}
                     contains: [
                         {
                             start: {match:/(?:actionbar|title|subtitle)/, 0: "subcommand"}
-                            end: {match:/.(?=..\n)/}
+                            end: {match:/.(?=.\n)/}
                             contains: [
                                 {builtin: #JAVA_QUOTED_STRING#}
                                 {builtin: #NORMAL_NUMBER#}
@@ -159,7 +188,7 @@
         {match:/(?:(?:\^-?\d+(?:\.\d+)?)|\^)(?: +(?:\^-?\d+(?:\.\d+)?)| *\^){2}|(?:\b(?:~?-?\d+(?:\.\d+)?)|~)(?: +(?:~?-?\d+(?:\.\d+)?)| *~){2}/, 0: "coords"}
         
         //匹配常规命令
-        { match: /(?<=\n)\w+/, 0: "unknownCmd" }
+        { match: /(?<=\n|^)\w+/, 0: "unknownCmd" }
 
         //匹配字符串(此处复制mt管理器自带语法文件中shell.mtsx的部分内容，不是我写的)
         {builtin: #SINGLE_QUOTED_STRING#}
