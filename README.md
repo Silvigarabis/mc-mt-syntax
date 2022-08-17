@@ -29,7 +29,6 @@
 ## 链接
 
 [MT管理器](https://www.coolapk.com/apk/bin.mt.plus)
-[苦力怕论坛（不定时更新）](https://klpbbs.com/thread-56633-1-1.html)
 
 ## 展示
 

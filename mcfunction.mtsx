@@ -29,8 +29,9 @@
     comment: {startsWith: "#", insertSpace: true, addToContains: false }
   
     //匹配自己设置的特殊注释(可能用不上)
-    lineBackground: {match: /^#{1,}\s*.*([=\{\}\[\]!:0-9]|if|unless|then|do).*/, color: "condHeader" }
-    
+    lineBackground: {match: /^#(#|var|:).*/, color: "condHeader" }
+    //lineBackground: {match: /^#{1,}\s*.*([=\{\}\[\]!:0-9]|if|unless|then|do).*/, color: "condHeader" }
+
     //检测错误注释(那种井号前边有空格的注释
     lineBackground: {match: /^\s+#.*$/, color: "error" }
 
@@ -38,8 +39,6 @@
     lineBackground: {match: /^#.*$/, color: "comment" }
 
     contains: [
-        
-        
         
         //匹配/execute
         //新版和旧版只能用一个
@@ -63,6 +62,7 @@
                 {match:/ +(if|unless)(?: +(score)(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))(?: +([^\s]+)(?: +(?:(matches)(?: +(?:(-?\d+)?(\.{2})?(-?\d+)?))?|(?:(>=|<=|[=<>])|(\S+))(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))(?: +([^\s]+))?)?))?)?)?)?/, 1: "command", 2: "subcommand", 3: "selector", 4: "selectorArgs", 5: "name", 6: "variable", 7: "subcommand", 8: "number", 9: "operator", 10: "number", 11: "operator", 12: "error", 13: "selector", 14: "selectorArgs", 15: "name", 16: "variable" }
                 
                 //同时匹配旧版execute（可能会出bug）
+                //已知的问题有：后边的命令可能会全部变成meta颜色
                 //{match:/(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))(?: +((?:(?:\^-?\d+(?:\.\d+)?)|\^)(?: +(?:\^-?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?-?\d+(?:\.\d+)?)|~)(?: +(?:~?-?\d+(?:\.\d+)?)| *~){0,2})(?: +(detect)(?: +((?:(?:\^-?\d+(?:\.\d+)?)|\^)(?: +(?:\^-?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?-?\d+(?:\.\d+)?)|~)(?: +(?:~?-?\d+(?:\.\d+)?)| *~){0,2})(?: +(\S+)(?: +(-?\d+))?)?)?)?)?)?/, 1: "selector", 2: "selectorArgs", 3: "name", 4: "coords", 5: "subcommand", 6: "coords", 7: "block", 8: "number" }
 
             ]
@@ -100,7 +100,7 @@
         
         //匹配/replaceitem entity
         {
-            start: {match: /(replaceitem)(?: +(entity)(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))(?: +(?:(slot(?:\.(?:(?:weapon(?:\.(?:offhand|mainhand))?|armor(?:\.(?:chest|legs|feet|head))?|enderchest|hotbar|inventory|saddle|chest|equippable)))?)|([^\s]+))(?: +(\d+)(?: +(?:(keep|replace) +)?(?:([A-Za-z0-9_:]{1,}))(?: +(\d+)(?: +(\d+))?)?)?)?)?)?)/, 1: "command", 2: "subcommand", 3: "selector", 4: "selectorArgs", 5: "name", 6: "meta", 7: "error", 8: "number", 9: "subcommand", 10: "item", 11: "number", 12: "variable" }
+            start: {match: /(replaceitem)(?: +(entity)(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))(?: +(?:(slot(?:\.(?:(?:weapon(?:\.(?:offhand|mainhand))?|armor(?:\.(?:chest|legs|feet|head))?|enderchest|hotbar|inventory|saddle|chest|equippable)))?)|([^\s]+))(?: +(\d+)(?: +(?:(keep|destroy) +)?(?:([A-Za-z0-9_:]{1,}))(?: +(\d+)(?: +(\d+))?)?)?)?)?)?)/, 1: "command", 2: "subcommand", 3: "selector", 4: "selectorArgs", 5: "name", 6: "meta", 7: "error", 8: "number", 9: "subcommand", 10: "item", 11: "number", 12: "variable" }
             end: {match: /\n/}
             contains: [
                 {builtin: #JAVA_QUOTED_STRING#}
