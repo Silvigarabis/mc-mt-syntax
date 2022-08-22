@@ -66,17 +66,17 @@
         
         //新版
         {
-            start:{match:/(execute)/, 1: "command"}
-            end:{match:/(?m)(?:(run)|$)/, 1: "subcommand" }
+            start:{match:/\bexecute/, 0: "command"}
+            end:{match:/(?m)(?:run|$)/, 0: "subcommand" }
             contains: [
                 //positioned
                 {match:/ +(positioned)(?: +(?:(as)(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+)))?|((?:(?:\^-?\d+(?:\.\d+)?)|\^)(?: +(?:\^-?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?-?\d+(?:\.\d+)?)|~)(?: +(?:~?-?\d+(?:\.\d+)?)| *~){0,2})))?/, 1: "command", 2: "subcommand", 3: "selector", 4: "selectorArgs", 5: "name", 6: "coords"}
                 {match:/ +(as|at)(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+)))?/, 1: "command", 2: "selector", 3: "selectorArgs", 4: "name" }
-                {match:/ +(if|unless)(?: +(entity)(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+)))?)/, 1: "command", 2:
+                {match:/ +(if|unless)(?: +(entity)(?: +(?:(?:(@\S)( *?\[.*?\])?)|(".*(?<!\\)"|\S+)))?)/, 1: "command", 2:
 "subcommand", 3: "selector", 4: "selectorArgs", 5: "name" }
                 {match:/ +(if|unless)(?: +(blocks)(?: +((?: *(?:(?:(?:\^-?\d+(?:\.\d+)?)|\^)(?: +(?:\^-?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?-?\d+(?:\.\d+)?)|~)(?: +(?:~?-?\d+(?:\.\d+)?)| *~){0,2})){0,2})(?: +((?:(?:\^-?\d+(?:\.\d+)?)|\^)(?: +(?:\^-?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?-?\d+(?:\.\d+)?)|~)(?: +(?:~?-?\d+(?:\.\d+)?)| *~){0,2})(?: +(all|masked))?)?)?)/, 1: "command", 2: "subcommand", 3: "coords", 4: "operator", 5: "meta" }
                 {match:/ +(if|unless)(?: +(block)(?: +((?:(?:\^-?\d+(?:\.\d+)?)|\^)(?: +(?:\^-?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?-?\d+(?:\.\d+)?)|~)(?: +(?:~?-?\d+(?:\.\d+)?)| *~){0,2})(?: (\w+)(?: +(?:(-?\d+)|(\[.*?\])))?)?)?)/, 1: "command", 2: "subcommand", 3: "coords", 4: "block", 5: "number", 6: "meta" }
-                {match:/ +(if|unless)(?: +(score)(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))(?: +([^\s]+)(?: +(?:(matches)(?: +(?:(-?\d+)?(\.{2})?(-?\d+)?))?|(?:(>=|<=|[=<>])|(\S+))(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))(?: +([^\s]+))?)?))?)?)?)?/, 1: "command", 2: "subcommand", 3: "selector", 4: "selectorArgs", 5: "name", 6: "variable", 7: "subcommand", 8: "number", 9: "operator", 10: "number", 11: "operator", 12: "error", 13: "selector", 14: "selectorArgs", 15: "name", 16: "variable" }
+                {match:/ +(if|unless)(?: +(score)(?: +(?:(?:(@\S)( *?\[.*?\])?)|(".*(?<!\\)"|\S+))(?: +([^\s]+)(?: +(?:(matches)(?: +(?:(-?\d+)?(\.{2})?(-?\d+)?))?|(?:(>=|<=|[=<>])|(\S+))(?: +(?:(?:(@\S)( *?\[.*?\])?)|(".*(?<!\\)"|\S+))(?: +([^\s]+))?)?))?)?)?)?/, 1: "command", 2: "subcommand", 3: "selector", 4: "selectorArgs", 5: "name", 6: "variable", 7: "subcommand", 8: "number", 9: "operator", 10: "number", 11: "operator", 12: "error", 13: "selector", 14: "selectorArgs", 15: "name", 16: "variable" }
                 
                 //同时匹配旧版execute（可能会出bug）
                 //已知的问题有：后边的命令可能会全部变成meta颜色
@@ -87,37 +87,37 @@
 
         //匹配/scoreboard players operation
         //可以判定操作符是否有误
-        {match: /\b(scoreboard +players) +(operation)(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))(?: +([^\s]+)(?: +(?:(><|\+=|-=|\*=|\/=|%=|[=<>])|(\S+))(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))(?: +([^\s]+))?)?)?)?)?/, 1: "command", 2: "subcommand", 3: "selector", 4: "selectorArgs", 5: "name", 6: "variable", 7: "operator", 8: "error", 9: "selector", 10: "selectorArgs", 11: "name", 12: "variable" }
+        {match: /\b(scoreboard +players) +(operation)(?: +(?:(?:(@\S)( *?\[.*?\])?)|(".*(?<!\\)"|\S+))(?: +([^\s]+)(?: +(?:(><|\+=|-=|\*=|\/=|%=|[=<>])|(\S+))(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))(?: +([^\s]+))?)?)?)?)?/, 1: "command", 2: "subcommand", 3: "selector", 4: "selectorArgs", 5: "name", 6: "variable", 7: "operator", 8: "error", 9: "selector", 10: "selectorArgs", 11: "name", 12: "variable" }
         
         //匹配/scoreboard players random
-        {match: /\b(scoreboard +players +)(random)(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))(?: +([^\s]+)(?: (-?\d+)(?: +(-?\d+))?)?)?)?/, 1: "command", 2: "subcommand", 3: "selector", 4: "selectorArgs", 5: "name", 6: "variable", 7: "number", 8: "number"}
+        {match: /\b(scoreboard +players +)(random)(?: +(?:(?:(@\S)( *?\[.*?\])?)|(".*(?<!\\)"|\S+))(?: +([^\s]+)(?: (-?\d+)(?: +(-?\d+))?)?)?)?/, 1: "command", 2: "subcommand", 3: "selector", 4: "selectorArgs", 5: "name", 6: "variable", 7: "number", 8: "number"}
 
         //匹配/scoreboard players
-        {match: /\b(scoreboard +players)(?:\x20+(\w+)(?:\x20+(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))(?:\x20+([^\s]+)(?:\x20+(-?\d+))?)?)?)?/, 1: "command", 2: "subcommand", 3: "selector", 4: "selectorArgs", 5: "name", 6: "variable", 7: "number"}
+        {match: /\b(scoreboard +players)(?:\x20+(\w+)(?:\x20+(?:(?:(@\S)( *?\[.*?\])?)|(".*(?<!\\)"|\S+))(?:\x20+([^\s]+)(?:\x20+(-?\d+))?)?)?)?/, 1: "command", 2: "subcommand", 3: "selector", 4: "selectorArgs", 5: "name", 6: "variable", 7: "number"}
 
         //匹配/scoreboard objectives
         {match: /\b(scoreboard +objectives)(?: +(\w+)(?: +([^\s]+)(?: +(\w+)(?: +([^\n]+))?)?)?)?/, 1: "command", 2: "subcommand", 3: "variable", 4: "meta", 5: "meta"}
         
         //匹配/function
-        {match: /(function) +(\S+)/, 1: "command", 2: "funName"}
+        {match: /\b(function) +(\S+)/, 1: "command", 2: "funName"}
         
         //匹配/say
         {
-            start: {match: /say/, 0: "command"}
+            start: {match: /\bsay/, 0: "command"}
             end: {match:/(?m)$/}
             color: "string"
         }
         
         //匹配/tell
         {
-            start: {match: /(tell)(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+)))/, 1: "command", 2: "selector", 3: "selectorArgs", 4: "name"}
+            start: {match: /\b(tell)(?: +(?:(?:(@\S)( *?\[.*?\])?)|(".*(?<!\\)"|\S+)))/, 1: "command", 2: "selector", 3: "selectorArgs", 4: "name"}
             end: {match: /(?m)$/}
             color: "string"
         }
         
         //匹配/replaceitem entity
         {
-            start: {match: /(replaceitem)(?: +(entity)(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))(?: +(?:(slot(?:\.(?:(?:weapon(?:\.(?:offhand|mainhand))?|armor(?:\.(?:chest|legs|feet|head))?|enderchest|hotbar|inventory|saddle|chest|equippable)))?)|([^\s]+))(?: +(\d+)(?: +(?:(keep|destroy) +)?(?:([A-Za-z0-9_:]{1,}))(?: +(\d+)(?: +(\d+))?)?)?)?)?)?)/, 1: "command", 2: "subcommand", 3: "selector", 4: "selectorArgs", 5: "name", 6: "meta", 7: "error", 8: "number", 9: "subcommand", 10: "item", 11: "number", 12: "variable" }
+            start: {match: /\b(replaceitem)(?: +(entity)(?: +(?:(?:(@\S)( *?\[.*?\])?)|(".*(?<!\\)"|\S+))(?: +(?:(slot(?:\.(?:(?:weapon(?:\.(?:offhand|mainhand))?|armor(?:\.(?:chest|legs|feet|head))?|enderchest|hotbar|inventory|saddle|chest|equippable)))?)|([^\s]+))(?: +(\d+)(?: +(?:(keep|destroy) +)?(?:([A-Za-z0-9_:]{1,}))(?: +(\d+)(?: +(\d+))?)?)?)?)?)?)/, 1: "command", 2: "subcommand", 3: "selector", 4: "selectorArgs", 5: "name", 6: "meta", 7: "error", 8: "number", 9: "subcommand", 10: "item", 11: "number", 12: "variable" }
             end: {match: /(?m)$/}
             contains: [
                 {builtin: #JAVA_QUOTED_STRING#}
@@ -128,7 +128,7 @@
         
         // /replaceitem block
         {
-            start: { match: /(replaceitem)(?: +(block)(?: +((?:(?:\^-?\d+(?:\.\d+)?)|\^)(?: +(?:\^-?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?-?\d+(?:\.\d+)?)|~)(?: +(?:~?-?\d+(?:\.\d+)?)| *~){0,2})(?: +(?:(slot.container)|(\S+))(?: +(\d+)(?: +(?:(keep|replace) +)?(?:([A-Za-z0-9_:]{1,}))(?: +(\d+)(?: +(\d+))?)?)?)?)?)?)/, 1: "command", 2: "subcommand", 3: "coords", 4: "meta", 5: "error", 6: "number", 7: "subcommand", 8: "item", 9: "number", 10: "variable" }
+            start: { match: /\b(replaceitem)(?: +(block)(?: +((?:(?:\^-?\d+(?:\.\d+)?)|\^)(?: +(?:\^-?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?-?\d+(?:\.\d+)?)|~)(?: +(?:~?-?\d+(?:\.\d+)?)| *~){0,2})(?: +(?:(slot.container)|(\S+))(?: +(\d+)(?: +(?:(keep|replace) +)?(?:([A-Za-z0-9_:]{1,}))(?: +(\d+)(?: +(\d+))?)?)?)?)?)?)/, 1: "command", 2: "subcommand", 3: "coords", 4: "meta", 5: "error", 6: "number", 7: "subcommand", 8: "item", 9: "number", 10: "variable" }
             end: {match: /(?m)$/}
             contains: [
                 {builtin: #JAVA_QUOTED_STRING#}
@@ -136,13 +136,14 @@
                 {match: keywordsToRegex("true false null"), 0: "keyword"}
             ]
         }
+        
         //匹配/tellraw
         {
-            start: {match: /tellraw/, 0: "command"}
+            start: {match: /\btellraw/, 0: "command"}
             end: {match: /(?m)$/}
             contains: [
                 {
-                    start: {match: /(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))/, 1:"selector", 2: "selectorArgs", 3: "name" }
+                    start: {match: /(?:(?:(@\S)( *?\[.*?\])?)|(".*(?<!\\)"|\S+))/, 1:"selector", 2: "selectorArgs", 3: "name" }
                     end: {match:/(?m)$/}
                     contains: [
                         {
@@ -206,11 +207,11 @@
         
         //匹配/titleraw
         {
-            start: {match: /titleraw/, 0: "command"}
+            start: {match: /\btitleraw/, 0: "command"}
             end: {match: /(?m)$/}
             contains: [
                 {
-                    start: {match: /(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))/, 1:"selector", 2: "selectorArgs", 3: "name" }
+                    start: {match: /(?:(?:(@\S)( *?\[.*?\])?)|(".*(?<!\\)"|\S+))/, 1:"selector", 2: "selectorArgs", 3: "name" }
                     end: {match:/(?m)$/}
                     contains: [
                         {
@@ -273,6 +274,7 @@
                                 {match: keywordsToRegex("true false null"), 0: "keyword"}
                             ]
                         }
+                        {match: /(times)(?: +(\d+)(?: +(\d+)(?: +(\d+))?)?)?/, 1: "subcommand", 2: "number", 3: "number", 4: "number"}
                         {match: /(?:actionbar|title|subtitle|reset|clear|times)/, 0: "subcommand"}
                     ]
                 }
@@ -335,11 +337,11 @@
         
         //匹配目标选择器
         {match: /@[aeprsvc](\[.*?\])?/, 0: "selector", 1: "selectorArgs" }
-        
+
         //匹配完整坐标
-        {match:/(?:(?:\^-?\d+(?:\.\d+)?)|\^)(?: +(?:\^-?\d+(?:\.\d+)?)| *\^){2}|(?:\b(?:~?-?\d+(?:\.\d+)?)|~)(?: +(?:~?-?\d+(?:\.\d+)?)| *~){2}/, 0: "coords"}
+        {match:/\b(?:(?:\^-?\d+(?:\.\d+)?)|\^)(?: +(?:\^-?\d+(?:\.\d+)?)| *\^){2}|(?:\b(?:~?-?\d+(?:\.\d+)?)|~)(?: +(?:~?-?\d+(?:\.\d+)?)| *~){2}\b/, 0: "coords"}
         
-                //匹配已知命令
+        //匹配已知命令
         {match: keywordsToRegex(
             //教育版
             "ability immutableworld worldbuilder"
@@ -379,14 +381,27 @@
         {match:/§f/,0:"format_white"}
         {match:/§g/,0:"format_minecoin_gold"}
         
-        //匹配常规命令
+        //匹配常规命令(每行开头的单词将视为指令)
         { match: /(?m)^\w+/, 0: "unknownCmd" }
         
-
     ]
 }
 {
     //目标选择器解析（还没写）
     name: #COMMAND_SELECTOR#
+    contains: [
+        {match: /@[aeprsvc]/, 0: "selector"}
+        {
+            start: {match: /(?<=@[aeprsvc] *?)\[/, 0:"selectorArgs"}
+            end: {match: /(?m)\]|$/, 0:"selectorArgs"}
+            color: "selectorArgs"
+            contains: [
+                {
+                    start: {match: /type/, 0: "meta"}
+                    end: {match: /=((?:\S+:)?(?:\S+))/,"}
+                }
+            ]
+        }
+    ]
 }
 
