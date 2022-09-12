@@ -1,5 +1,13 @@
-//this file is under GNU GENERAL PUBLIC LICENSE Version 3, for more info, see https://www.gnu.org/licenses/gpl-3.0.en.html
-//开放源代码？ https://github.com/Silvigarabis/mc-mt-syntax
+// this file is under GNU GENERAL PUBLIC LICENSE Version 3, for more info, see https://www.gnu.org/licenses/gpl-3.0.en.html
+// 开放源代码？不过没啥必要吧，全是正则表达式 https://github.com/Silvigarabis/mc-mt-syntax
+// 适用于MT管理器的mcfunction语法高亮（版本1.0.2-beta（这个版本其实只是随便写的，根据大概的编写历程）
+// 目前支持部分指令的动态高亮（例：/replaceitem, /execute），部分可添加json参数的指令可以渲染json的颜色（例：/tellraw），部分参数（例如/scoreboard players operation的运算符）能够判断是否正确，以及下列特殊形式的高亮
+// 1.注释（以“#”开头）默认使用灰色背景标出，如果注释以“#:”开头，将会使用类似粉红色的背景标出。如果一行注释没有从行开头插入，将会用红色背景标出。
+// 2.每行第一个词默认会被认为是位置指令
+// 3.可匹配高亮疑似坐标的文本；可匹配高亮疑似目标选择器的文本，但是无法针对其参数进行高亮；可匹配格式化代码中修改颜色的代码
+// 目前可能存在的问题：由于匹配太多，可能很卡
+// 对于命令/execute，目前有两种不同的匹配，一种是新版，一种是旧版，同时使用两个只有一个可以生效。但是你可以尝试在新版中使用兼容旧版，不过会有一些问题（无法结束此行的execute）
+//（话说要不是这mtsx只能用//注释我早就用/**/了）
 {
     name: ["Minecraft Function", ".mcfunction"]
     colors: [
