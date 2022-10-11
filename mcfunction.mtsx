@@ -1,13 +1,21 @@
 // this file is under GNU GENERAL PUBLIC LICENSE Version 3, for more info, see https://www.gnu.org/licenses/gpl-3.0.en.html
 // 开放源代码？不过没啥必要吧，全是正则表达式 https://github.com/Silvigarabis/mc-mt-syntax
-// 适用于MT管理器的mcfunction语法高亮（版本1.0.2-beta（这个版本其实只是随便写的，根据大概的编写历程）
+// 适用于MT管理器的mcfunction语法高亮（版本1.0.3-beta（这个版本其实只是随便写的，根据大概的编写历程）
 // 目前支持部分指令的动态高亮（例：/replaceitem, /execute），部分可添加json参数的指令可以渲染json的颜色（例：/tellraw），部分参数（例如/scoreboard players operation的运算符）能够判断是否正确，以及下列特殊形式的高亮
 // 1.注释（以“#”开头）默认使用灰色背景标出，如果注释以“#:”开头，将会使用类似粉红色的背景标出。如果一行注释没有从行开头插入，将会用红色背景标出。
-// 2.每行第一个词默认会被认为是位置指令
+// 2.每行第一个词默认会被认为是未知指令
 // 3.可匹配高亮疑似坐标的文本；可匹配高亮疑似目标选择器的文本，但是无法针对其参数进行高亮；可匹配格式化代码中修改颜色的代码
 // 目前可能存在的问题：由于匹配太多，可能很卡
 // 对于命令/execute，目前有两种不同的匹配，一种是新版，一种是旧版，同时使用两个只有一个可以生效。但是你可以尝试在新版中使用兼容旧版，不过会有一些问题（无法结束此行的execute）
 //（话说要不是这mtsx只能用//注释我早就用/**/了）
+
+//20221011更新内容
+///execute in 
+///tag
+///give
+///clear
+///event
+///title
 {
     name: ["Minecraft Function", ".mcfunction"]
     colors: [
@@ -80,6 +88,7 @@
                 //positioned
                 {match:/ +(positioned)(?: +(?:(as)(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+)))?|((?:(?:\^-?\d+(?:\.\d+)?)|\^)(?: +(?:\^-?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?-?\d+(?:\.\d+)?)|~)(?: +(?:~?-?\d+(?:\.\d+)?)| *~){0,2})))?/, 1: "command", 2: "subcommand", 3: "selector", 4: "selectorArgs", 5: "name", 6: "coords"}
                 {match:/ +(as|at)(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+)))?/, 1: "command", 2: "selector", 3: "selectorArgs", 4: "name" }
+                {match:/ +(in)(?: +(\S+))?/, 1: "command", 2: "meta" }
                 {match:/ +(if|unless)(?: +(entity)(?: +(?:(?:(@\S)( *?\[.*?\])?)|(".*(?<!\\)"|\S+)))?)/, 1: "command", 2:
 "subcommand", 3: "selector", 4: "selectorArgs", 5: "name" }
                 {match:/ +(if|unless)(?: +(blocks)(?: +((?: *(?:(?:(?:\^-?\d+(?:\.\d+)?)|\^)(?: +(?:\^-?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?-?\d+(?:\.\d+)?)|~)(?: +(?:~?-?\d+(?:\.\d+)?)| *~){0,2})){0,2})(?: +((?:(?:\^-?\d+(?:\.\d+)?)|\^)(?: +(?:\^-?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?-?\d+(?:\.\d+)?)|~)(?: +(?:~?-?\d+(?:\.\d+)?)| *~){0,2})(?: +(all|masked))?)?)?)/, 1: "command", 2: "subcommand", 3: "coords", 4: "operator", 5: "meta" }
@@ -288,7 +297,96 @@
                 }
             ]
         }
-
+        
+        //匹配/title
+        {
+            start: {match: /\btitle/, 0: "command"}
+            end: {match: /(?m)$/}
+            contains: [
+                {
+                    start: {match: /(?:(?:(@\S)( *?\[.*?\])?)|(".*(?<!\\)"|\S+))/, 1:"selector", 2: "selectorArgs", 3: "name" }
+                    end: {match:/(?m)$/}
+                    contains: [
+                        {
+                            start: {match:/(?:actionbar|title|subtitle)/, 0: "subcommand"}
+                            end: {match:/(?m)$/}
+                            color: "string"
+                            contains: [
+                                {match:/§0/,0:"format_dark"}
+                                {match:/§1/,0:"format_dark_blue"}
+                                {match:/§2/,0:"format_dark_green"}
+                                {match:/§3/,0:"format_dark_aqua"}
+                                {match:/§4/,0:"format_dark_red"}
+                                {match:/§5/,0:"format_dark_purple"}
+                                {match:/§6/,0:"format_gold"}
+                                {match:/§7/,0:"format_gray"}
+                                {match:/§8/,0:"format_dark_gray"}
+                                {match:/§9/,0:"format_blue"}
+                                {match:/§a/,0:"format_green"}
+                                {match:/§b/,0:"format_aqua"}
+                                {match:/§c/,0:"format_red"}
+                                {match:/§d/,0:"format_light_purple"}
+                                {match:/§e/,0:"format_yellow"}
+                                {match:/§f/,0:"format_white"}
+                                {match:/§g/,0:"format_minecoin_gold"}
+                            ]
+                        }
+                        {match: /(times)(?: +(\d+)(?: +(\d+)(?: +(\d+))?)?)?/, 1: "subcommand", 2: "number", 3: "number", 4: "number"}
+                        {match: /(?:actionbar|title|subtitle|reset|clear|times)/, 0: "subcommand"}
+                    ]
+                }
+            ]
+        }
+        
+        { //event
+            match: /(event)(?: +(?:(entity)|(\S+))(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))(?: +(\S+))?)?)/,
+            1: "command",
+            2: "subcommand",
+            3: "error",
+            4: "selector",
+            5: "selectorArgs",
+            6: "name",
+            7: "meta"
+        }
+        
+        { //clear
+            match: /(clear)(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))(?: +(\S+)(?: +(-?\d+)(?: +(-?\d+))?)?)?)?/,
+             1: "command",
+             2: "selector",
+             3: "selectorArgs",
+             4: "name",
+             5: "item",
+             6: "variable",
+             7: "number"
+        }
+        
+        { //give
+            start: { match: /(give)(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))(?: +(\S+)(?: +(-?\d+)(?: +(-?\d+))?)?)?)?/,
+             1: "command",
+             2: "selector",
+             3: "selectorArgs",
+             4: "name",
+             5: "item",
+             6: "number",
+             7: "variable"
+            },
+            contains: [
+                {builtin: #JAVA_QUOTED_STRING#}
+                {builtin: #NORMAL_NUMBER#}
+                {match: keywordsToRegex("true false null"), 0: "keyword"}
+            ],
+            end: { match: /(?m)$/ }
+        }
+        {//tag
+             match: /(tag)(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))(?: +(?:(?:(add|remove)(?: +(".*(?<!\\)"|\S+))?|(list))))?)?/,
+             1: "command",
+             2: "selector",
+             3: "selectorArgs",
+             4: "name",
+             5: "subcommand",
+             6: "variable",
+             7: "subcommand"
+        }
         //匹配字符串
         {
             color: "string"

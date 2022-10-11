@@ -83,3 +83,19 @@ replaceitem block ~ ~ ~ slot.container
 7: meta/item
 8: number
 9: variable
+
+# event
+(event)(?: +(?:(entity)|(\S+))(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))(?: +(\S+))?)?)
+event entity @s qqajsjej
+
+# tag
+(tag)(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))(?: +(?:(?:(add|remove)(?: +(".*(?<!\\)"|\S+))?|(list))))?)?
+
+tag @s remove "siwjjwjwk:  nwwjkwksnwnjwwjajwkkekeke@jwjjw"
+tag @s list
+
+#clear
+(clear)(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))(?: +(\S+)(?: +(-?\d+)(?: +(-?\d+))?)?)?)?
+clear @s apple 0 2
+#
+give @s apple 23 0 { "item_lock": { "mode": "lock_in_inventory"}, "keep_on_death": {}           }
