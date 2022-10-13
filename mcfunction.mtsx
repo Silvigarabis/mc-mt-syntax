@@ -19,6 +19,8 @@
 
 ///20221012
 //部分匹配使用\b
+///gamemode
+///尝试兼容旧版的/execute
 {
     name: ["Minecraft Function", ".mcfunction"]
     colors: [
@@ -120,9 +122,9 @@
         //匹配/function
         {match: /\b(function) +(\S+)/, 1: "command", 2: "funName"}
         
-        //匹配/say
+        //匹配/say和/me
         {
-            start: {match: /\bsay\b/, 0: "command"}
+            start: {match: /\b(?:me|say)\b/, 0: "command"}
             end: {match:/(?m)$/}
             color: "string"
         }
@@ -158,7 +160,7 @@
         
         //匹配/tellraw
         {
-            start: {match: /\btellraw/, 0: "command"}
+            start: {match: /\btellraw\b/, 0: "command"}
             end: {match: /(?m)$/}
             contains: [
                 {
@@ -226,7 +228,7 @@
         
         //匹配/titleraw
         {
-            start: {match: /\btitleraw/, 0: "command"}
+            start: {match: /\btitleraw\b/, 0: "command"}
             end: {match: /(?m)$/}
             contains: [
                 {
@@ -302,7 +304,7 @@
         
         //匹配/title
         {
-            start: {match: /\btitle/, 0: "command"}
+            start: {match: /\btitle\b/, 0: "command"}
             end: {match: /(?m)$/}
             contains: [
                 {
@@ -379,6 +381,7 @@
             ],
             end: { match: /(?m)$/ }
         }
+        
         {//tag
              match: /\b(tag)(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))(?: +(?:(?:(add|remove)(?: +(".*(?<!\\)"|\S+))?|(list))))?)?/,
              1: "command",
@@ -389,6 +392,34 @@
              6: "variable",
              7: "subcommand"
         }
+        
+        { //gamerule
+            match: /\b(gamerule) +(?:(\S+)(?: +(?:(-?\d+)|(\S+)))?)/,
+            1: "command",
+            2: "meta",
+            3: "number",
+            4: "variable"
+        }
+        { //gamemode
+            match: /\b(gamemode) +(?:(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+))(?: +(s(?:pectator|urvival)?|c(?:reative)?|a(?:dventure)?|d(?:efault)?|\d+))?)/,
+            1: "command",
+            2: "selector",
+            3: "selectorArgs",
+            4: "name",
+            5: "meta"
+        }
+        
+        {//xp
+            match: /\b(xp)(?: +(?:(?:(-?\d+)(l|L))|(\d+))(?: +(?:(?:(@\S)( *?\[.*\])?)|(".*(?<!\\)"|\S+)))?)?/,
+            1: "command",
+            2: "number",
+            3: "operator",
+            4: "number",
+            5: "selector",
+            6: "selectorArgs",
+            7: "name"
+        }
+        
         //匹配字符串
         {
             color: "string"

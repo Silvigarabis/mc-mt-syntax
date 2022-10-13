@@ -29,6 +29,7 @@
 ## 链接
 
 [MT管理器](https://www.coolapk.com/apk/bin.mt.plus)
+[苦力怕论坛](https://klpbbs.com/thread-66574-1-1.html "适用于mt管理器的mcfunction语法高亮描述文件")
 
 ## 展示
 
