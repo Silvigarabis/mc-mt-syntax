@@ -1,0 +1,122 @@
+// this file is under GNU GENERAL PUBLIC LICENSE Version 3, for more info, see https://www.gnu.org/licenses/gpl-3.0.en.html
+// 开放源代码？不过没啥必要吧，全是正则表达式 https://github.com/Silvigarabis/mc-mt-syntax
+// 适用于MT管理器的JavaScript语法高亮（版本1.0.0-beta（这个版本其实只是随便写的，根据大概的编写历程）
+//20221223更新
+//写好了
+//给各种关键词改了个名
+{
+    name: ["Colour JavaScript", ".js", ".es", ".mjs", ".ts"]
+    comment: {startsWith: "//"}
+    colors: [
+        "methodHeader", #FFEDED, #443034
+        "keyword", #001BA3, #CC7832
+        "variableDefineKeyword" > "variable"
+        "typeDefineKeyword" > "type"
+        "typeCheckKeyword", #9370DB, #CDEE69
+        "specialVariable" > "constant"
+        "expressionEvaluateKeyword" > "operator"
+        "flowControlKeyword" > "keyword2"
+        "conditionKeyword", #7B68EE, #7B68EE
+        "functionName" > "meta"
+        "namespaceKeyword" > "error"
+        "accessKeyword" > "label"
+        "normalVariableLike", #556B2F, #B8860B
+    ]
+    contains: [
+        {
+            start: {match: "/\\*\\*"}
+            end: {match: "\\*/"}
+            contains: [
+                {match: /(@(?:type|returns?|implements))[ \t]+\{(.+)\}/, 1: "label", 2: "type"}
+                {match: /(@(?:typedef))[ \t]+(?:\{(.+)\}[ \t]+)?(\S+)/, 1: "label", 2: "type", 3: "namespace"}
+                {match: /(@(?:param|prop(?:erty)?))[ \t]+\{(.+)\}[ \t]+(?:\[(\S+)\]|(\S+))/, 1: "label", 2: "type", 3: "namespace", 4: "namespace"}
+                {match: keywordsToRegex(
+                    "@hideconstructor @constructor @abstract @virtual @class @async"
+                    "@example @generator @global @ignore @inheritdoc"
+                ), 0,: "label"}
+                {match: /\B@[\w_]+\b/, 0,: "label"}
+            ]
+            color: "comment"
+        }
+        {
+            start: {match: "/\\*"}
+            end: {match: "\\*/"}
+            color: "comment"
+        }
+        // 双引号文本
+        {builtin: #JAVA_QUOTED_STRING#}
+        // 单引号文本
+        {
+            color: "string"
+            start: {match: /`/}
+            end: {match: /(?m)`|$/}
+            contains: [
+                {builtin: #JAVA_ESCAPED_CHAR#}
+                {match: /\$\{.*?\}/, 0: "strEscape"}
+            ]
+        }
+        // 正则表达式
+        {
+            color: "meta"
+            start: {match: "(=\\s*)/", 1: "default"}
+            end: {match: "(?m)/([img]*)|$", 1: "operator"}
+            contains: [
+                {match: "\\\\/", 0: "strEscape"}
+            ]
+        }
+        //bigint
+        {match: /\b(?:[1-9][0-9]*|0)n\b/, 0: "number"}
+        //bigdecimal
+        {match: /\b(?:[1-9][0-9]*|0)(?:\.[0-9]+)?m\b/, 0: "number"}
+        //normal number
+        {match: /\b(?:0o?[0-7]+|0b[01]+|0x[0-9a-fA-F]+|\d+(?:\.[0-9]+)?[eE]-?\d+|(?:[1-9][0-9]*|0)(?:\.[0-9]+)?|NaN|Infinity)\b/, 0: "number"}
+        {match: keywordsToRegex(
+                "return yield throw break case continue debugger default"
+            ), 0: "flowControlKeyword"
+        }
+        {match: keywordsToRegex(
+                "try catch finally if else do while for switch"
+            ), 0: "conditionKeyword"
+        }
+        {match: keywordsToRegex(
+                "var const let async function export"
+            ), 0: "variableDefineKeyword"
+        }
+        // //{match: /(?m)(import)[\t ]+?(?:\{\s*(?:\S+,?\s*)*?\}\s*from)?(?=.*$|.*;)/, 
+        {match: keywordsToRegex(
+                "class enum import interface"
+            ), 0: "typeDefineKeyword"
+        }
+        {match: /\bfrom\b(?=[\t ]+(".*")($|;))/, 0: "typeCheckKeyword"}
+        {match: keywordsToRegex(
+                "extends implements instanceof readonly"
+            ), 0: "typeCheckKeyword"
+        }
+        {match: keywordsToRegex(
+                "package static private protected public"
+            ), 0: "accessKeyword"
+        }
+        {match: keywordsToRegex(
+                "with"
+                "delete"
+            ), 0: "namespaceKeyword"
+        }
+        {match: keywordsToRegex(
+                "typeof new void await"
+            ), 0: "expressionEvaluateKeyword"
+        }
+        {match: keywordsToRegex(
+                "super null true false this globalThis Infinity NaN undefined"
+            ), 0: "specialVariable"
+        }
+        {match: /(?<=class|enum|interface)[ \t]+[_A-Za-z][_A-Za-z0-9]*/, 0: "namespace"}
+        //{match: /(?<=\b[#_A-Za-z][_A-Za-z0-9]{0,100}\b)\.(?=\b[#_A-Za-z][_A-Za-z0-9]{0,100}\b)|(?<=\b[#_A-Za-z][_A-Za-z0-9]{0,100}\b)\.|\.(?=\b[#_A-Za-z][_A-Za-z0-9]{0,100}\b)/, 0: "operator"}
+        {match: /\b[#_A-Za-z][_A-Za-z0-9]*\b(?=\(.*?\))/, 0: "functionName",
+        }
+        
+        {match: /(?<=\.)\b(\S+?)\b/, 0: "propKey"
+        }
+        {match: /\b[#_A-Za-z][_A-Za-z0-9]*\b/, 0: "normalVariableLike"}
+    ]
+    codeFormatter: #BUILT_IN_JS_FORMATTER#
+}
