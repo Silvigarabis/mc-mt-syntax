@@ -37,6 +37,9 @@
 // summon tp effect
 //开写……
 
+//20230118
+//现在是凌晨4点，我更新好了上边说的三个指令
+
 {
     name: ["Minecraft Function", ".mcfunction"]
     colors: [

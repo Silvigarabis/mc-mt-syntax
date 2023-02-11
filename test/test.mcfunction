@@ -124,9 +124,10 @@ tp @s 2 255 245 facing @s unknown
 
 tp ^ ^+2.5 ^3
 
-#bug
-
+##bug
 tp ^ ~ ~
+
+function awansnndnd
 
 tp 244 191 134.2 ~-21.4 -87
 
@@ -135,9 +136,5 @@ execute rotated ~0 ~288393
 replaceitem entity @s slot.weapon
 
 @s[name="j2j2j, "]
-
-("@(?:[aeprs]|initiator)(?:\[.*])?"|@(?:[aeprs]|initiator)(?:\[[^ ]*])?|"[A-Za-z][A-Za-z0-9\s]*"|[A-Za-z][A-Za-z0-9_]*)
-@s 239
-
 
 effect aajwjw nsnwnwnw 255 245 false
