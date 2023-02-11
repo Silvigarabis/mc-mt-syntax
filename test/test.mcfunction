@@ -127,7 +127,7 @@ tp ^ ^+2.5 ^3
 ##bug
 tp ^ ~ ~
 
-tp @s [amwnwensmsnsns] ~ ~ ~ facing @s[] 
+tp @s [amwnwensmsnsns] ~~~ false
 
 function awansnndnd
 
