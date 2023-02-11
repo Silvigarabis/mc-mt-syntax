@@ -118,13 +118,13 @@
         //如果要混合使用请使用新版，并使用其中的兼容旧版
         
         //旧版
-        //{match:/(execute)(?: +(?:(@(?:[aeprscv]|initiator))(?: *(\[.*]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$)(?: +((?:(?:\^[\-\+]?\d+(?:\.\d+)?)|\^)(?: +(?:\^[\-\+]?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?[\-\+]?\d+(?:\.\d+)?)|~)(?: +(?:~?[\-\+]?\d+(?:\.\d+)?)| *~){0,2})(?: +(detect)(?: +((?:(?:\^[\-\+]?\d+(?:\.\d+)?)|\^)(?: +(?:\^[\-\+]?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?[\-\+]?\d+(?:\.\d+)?)|~)(?: +(?:~?[\-\+]?\d+(?:\.\d+)?)| *~){0,2})(?: +(\S+)(?: +(-?\d+))?)?)?)?)?)?/, 1: "command", 2: "selector", 3: "selectorArgs", 4: "name", 5: "coords", 6: "subcommand", 7: "coords", 8: "block", 9: "number" }
+        //{match:/(execute)(?: +(?:(@(?:[aeprscv]|initiator))(?: *(\[.*?]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$)(?: +((?:(?:\^[\-\+]?\d+(?:\.\d+)?)|\^)(?: +(?:\^[\-\+]?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?[\-\+]?\d+(?:\.\d+)?)|~)(?: +(?:~?[\-\+]?\d+(?:\.\d+)?)| *~){0,2})(?: +(detect)(?: +((?:(?:\^[\-\+]?\d+(?:\.\d+)?)|\^)(?: +(?:\^[\-\+]?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?[\-\+]?\d+(?:\.\d+)?)|~)(?: +(?:~?[\-\+]?\d+(?:\.\d+)?)| *~){0,2})(?: +(\S+)(?: +(-?\d+))?)?)?)?)?)?/, 1: "command", 2: "selector", 3: "selectorArgs", 4: "name", 5: "coords", 6: "subcommand", 7: "coords", 8: "block", 9: "number" }
         
         //新版
         {
             start:{match:/\bexecute\b/, 0: "command"}
             //同时匹配旧版（旧版的动态渲染有问题，这是为了确保可以正常结束指令，你可以只使用旧版来获得最佳体验）
-            end:{match:/(?m)(?:$|(run)|(?:(?:(@(?:[aeprscv]|initiator))(?: *(\[.*]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$)(?: +((?:(?:\^[\-\+]?\d+(?:\.\d+)?)|\^)(?: +(?:\^[\-\+]?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?[\-\+]?\d+(?:\.\d+)?)|~)(?: +(?:~?[\-\+]?\d+(?:\.\d+)?)| *~){0,2})(?: +(detect)(?: +((?:(?:\^[\-\+]?\d+(?:\.\d+)?)|\^)(?: +(?:\^[\-\+]?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?[\-\+]?\d+(?:\.\d+)?)|~)(?: +(?:~?[\-\+]?\d+(?:\.\d+)?)| *~){0,2})(?: +(\S+)(?: +(-?\d+)))))?)))/, 1: "subcommand", 2: "selector", 3: "selectorArgs", 4: "name", 5: "coords", 6: "subcommand", 7: "coords", 8: "block", 9: "variable" }
+            end:{match:/(?m)(?:$|(run)|(?:(?:(@(?:[aeprscv]|initiator))(?: *(\[.*?]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$)(?: +((?:(?:\^[\-\+]?\d+(?:\.\d+)?)|\^)(?: +(?:\^[\-\+]?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?[\-\+]?\d+(?:\.\d+)?)|~)(?: +(?:~?[\-\+]?\d+(?:\.\d+)?)| *~){0,2})(?: +(detect)(?: +((?:(?:\^[\-\+]?\d+(?:\.\d+)?)|\^)(?: +(?:\^[\-\+]?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?[\-\+]?\d+(?:\.\d+)?)|~)(?: +(?:~?[\-\+]?\d+(?:\.\d+)?)| *~){0,2})(?: +(\S+)(?: +(-?\d+)))))?)))/, 1: "subcommand", 2: "selector", 3: "selectorArgs", 4: "name", 5: "coords", 6: "subcommand", 7: "coords", 8: "block", 9: "variable" }
             //不匹配旧版
             //end: {match: /(?m)(?:\b(run)|$)/, 1: "subcommand" }
             contains: [
@@ -132,35 +132,35 @@
                 {match: /\b(align)(?: +(?:(x(?:yz?|zy?)?|y(?:zx?|xz?)?|z(?:xy?|yx?)?)\b|(\S+)))?/, 1: "subcommand", 2: "meta", 3: "error"}
                 {match: /\b(anchored)(?: +(?:(eyes|feet)\b|(\S+)))?/, 1: "subcommand", 2: "meta", 3: "error"}
                 //positioned
-                {match:/\b(positioned)(?: +(?:(as)(?: +(?:(@(?:[aeprscv]|initiator))(?: *(\[.*]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$))?|((?:(?:\^[\-\+]?\d+(?:\.\d+)?)|\^)(?: +(?:\^[\-\+]?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?[\-\+]?\d+(?:\.\d+)?)|~)(?: +(?:~?[\-\+]?\d+(?:\.\d+)?)| *~){0,2})))?/, 1: "command", 2: "subcommand", 3: "selector", 4: "selectorArgs", 5: "name", 6: "coords"}
-                {match:/\b(rotated)(?: +(?:(as)(?: +(?:(@(?:[aeprscv]|initiator))(?: *(\[.*]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$))?|(?:(~?[\-\+]?[0-9]+(?:\.[0-9]+)?|~)(?: +(~?[\-\+]?[0-9]+(?:\.[0-9]+)?|~)))))?/, 1: "command", 2: "subcommand", 3: "selector", 4: "selectorArgs", 5: "name", 6: "coords", 7: "coords"}
-                {match:/\b(facing)(?: +(?:(entity)(?: +(?:(@(?:[aeprscv]|initiator))(?: *(\[.*]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$)(?: +(?:(eyes|feet)\b|(\S+)))?)?|((?:(?:\^[\-\+]?\d+(?:\.\d+)?)|\^)(?: +(?:\^[\-\+]?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?[\-\+]?\d+(?:\.\d+)?)|~)(?: +(?:~?[\-\+]?\d+(?:\.\d+)?)| *~){0,2})))?/, 1: "command", 2: "subcommand", 3: "selector", 4: "selectorArgs", 5: "name", 6: "meta", 7: "error", 8: "coords"}
-                {match:/\b(as|at)(?: +(?:(@(?:[aeprscv]|initiator))(?: *(\[.*]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$))?/, 1: "subcommand", 2: "selector", 3: "selectorArgs", 4: "name" }
+                {match:/\b(positioned)(?: +(?:(as)(?: +(?:(@(?:[aeprscv]|initiator))(?: *(\[.*?]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$))?|((?:(?:\^[\-\+]?\d+(?:\.\d+)?)|\^)(?: +(?:\^[\-\+]?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?[\-\+]?\d+(?:\.\d+)?)|~)(?: +(?:~?[\-\+]?\d+(?:\.\d+)?)| *~){0,2})))?/, 1: "command", 2: "subcommand", 3: "selector", 4: "selectorArgs", 5: "name", 6: "coords"}
+                {match:/\b(rotated)(?: +(?:(as)(?: +(?:(@(?:[aeprscv]|initiator))(?: *(\[.*?]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$))?|(?:(~?[\-\+]?[0-9]+(?:\.[0-9]+)?|~)(?: +(~?[\-\+]?[0-9]+(?:\.[0-9]+)?|~)))))?/, 1: "command", 2: "subcommand", 3: "selector", 4: "selectorArgs", 5: "name", 6: "coords", 7: "coords"}
+                {match:/\b(facing)(?: +(?:(entity)(?: +(?:(@(?:[aeprscv]|initiator))(?: *(\[.*?]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$)(?: +(?:(eyes|feet)\b|(\S+)))?)?|((?:(?:\^[\-\+]?\d+(?:\.\d+)?)|\^)(?: +(?:\^[\-\+]?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?[\-\+]?\d+(?:\.\d+)?)|~)(?: +(?:~?[\-\+]?\d+(?:\.\d+)?)| *~){0,2})))?/, 1: "command", 2: "subcommand", 3: "selector", 4: "selectorArgs", 5: "name", 6: "meta", 7: "error", 8: "coords"}
+                {match:/\b(as|at)(?: +(?:(@(?:[aeprscv]|initiator))(?: *(\[.*?]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$))?/, 1: "subcommand", 2: "selector", 3: "selectorArgs", 4: "name" }
                 {match:/\b(in)(?: +(\S+))?/, 1: "subcommand", 2: "meta" }
-                {match:/\b(if|unless)(?: +(entity)(?: +(?:(@(?:[aeprscv]|initiator))(?: *(\[.*]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$))?)/, 1: "command", 2:
+                {match:/\b(if|unless)(?: +(entity)(?: +(?:(@(?:[aeprscv]|initiator))(?: *(\[.*?]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$))?)/, 1: "command", 2:
 "subcommand", 3: "selector", 4: "selectorArgs", 5: "name" }
                 {match:/\b(if|unless)(?: +(blocks)(?: +((?:(?:\^[\-\+]?\d+(?:\.\d+)?)|\^)(?: +(?:\^[\-\+]?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?[\-\+]?\d+(?:\.\d+)?)|~)(?: +(?:~?[\-\+]?\d+(?:\.\d+)?)| *~){0,2})(?: *((?:(?:\^[\-\+]?\d+(?:\.\d+)?)|\^)(?: +(?:\^[\-\+]?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?[\-\+]?\d+(?:\.\d+)?)|~)(?: +(?:~?[\-\+]?\d+(?:\.\d+)?)| *~){0,2})(?: *((?:(?:\^[\-\+]?\d+(?:\.\d+)?)|\^)(?: +(?:\^[\-\+]?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?[\-\+]?\d+(?:\.\d+)?)|~)(?: +(?:~?[\-\+]?\d+(?:\.\d+)?)| *~){0,2})(?: +(?:(all|masked)|(\S+)))?)?)?)?)/, 1: "command", 2: "subcommand", 3: "coords", 4: "coords", 5: "position", 6: "meta", 7: "error" }
                 {match:/\b(if|unless)(?: +(block)(?: +((?:(?:\^[\-\+]?\d+(?:\.\d+)?)|\^)(?: +(?:\^[\-\+]?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?[\-\+]?\d+(?:\.\d+)?)|~)(?: +(?:~?[\-\+]?\d+(?:\.\d+)?)| *~){0,2})(?: (\w+)(?: +(?:(-?\d+)|(\[.*?\])))?)?)?)/, 1: "command", 2: "subcommand", 3: "coords", 4: "block", 5: "number", 6: "meta" }
-                {match:/\b(if|unless)(?: +(score)(?: +(?:(@(?:[aeprscv]|initiator))(?: *(\[.*]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$)(?: +([^\s]+)(?: +(?:(matches)(?: +(?:(-?\d+)?(\.{2})?(-?\d+)?))?|(?:(>=|<=|[=<>])|(\S+))(?: +(?:(@(?:[aeprscv]|initiator))(?: *(\[.*]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$)(?: +([^\s]+))?)?))?)?)?)?/, 1: "command", 2: "subcommand", 3: "selector", 4: "selectorArgs", 5: "name", 6: "variable", 7: "subcommand", 8: "number", 9: "operator", 10: "number", 11: "operator", 12: "error", 13: "selector", 14: "selectorArgs", 15: "name", 16: "variable" }
+                {match:/\b(if|unless)(?: +(score)(?: +(?:(@(?:[aeprscv]|initiator))(?: *(\[.*?]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$)(?: +([^\s]+)(?: +(?:(matches)(?: +(?:(-?\d+)?(\.{2})?(-?\d+)?))?|(?:(>=|<=|[=<>])|(\S+))(?: +(?:(@(?:[aeprscv]|initiator))(?: *(\[.*?]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$)(?: +([^\s]+))?)?))?)?)?)?/, 1: "command", 2: "subcommand", 3: "selector", 4: "selectorArgs", 5: "name", 6: "variable", 7: "subcommand", 8: "number", 9: "operator", 10: "number", 11: "operator", 12: "error", 13: "selector", 14: "selectorArgs", 15: "name", 16: "variable" }
             
             ]
         }
 
         //匹配/scoreboard players operation
         //可以判定操作符是否有误
-        {match: /\b(scoreboard +players) +(operation)(?: +(?:(@(?:[aeprscv]|initiator))(?: *(\[.*]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$)(?: +([^\s]+)(?: +(?:(><|\+=|-=|\*=|\/=|%=|[=<>])|(\S+))(?: +(?:(@(?:[aeprscv]|initiator))(?: *(\[.*]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$)(?: +([^\s]+))?)?)?)?)?/, 1: "command", 2: "subcommand", 3: "selector", 4: "selectorArgs", 5: "name", 6: "variable", 7: "operator", 8: "error", 9: "selector", 10: "selectorArgs", 11: "name", 12: "variable" }
+        {match: /\b(scoreboard +players) +(operation)(?: +(?:(@(?:[aeprscv]|initiator))(?: *(\[.*?]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$)(?: +([^\s]+)(?: +(?:(><|\+=|-=|\*=|\/=|%=|[=<>])|(\S+))(?: +(?:(@(?:[aeprscv]|initiator))(?: *(\[.*?]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$)(?: +([^\s]+))?)?)?)?)?/, 1: "command", 2: "subcommand", 3: "selector", 4: "selectorArgs", 5: "name", 6: "variable", 7: "operator", 8: "error", 9: "selector", 10: "selectorArgs", 11: "name", 12: "variable" }
         
         //匹配/scoreboard players random
-        {match: /\b(scoreboard +players +)(random)(?: +(?:(@(?:[aeprscv]|initiator))(?: *(\[.*]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$)(?: +([^\s]+)(?: (-?\d+)(?: +(-?\d+))?)?)?)?/, 1: "command", 2: "subcommand", 3: "selector", 4: "selectorArgs", 5: "name", 6: "variable", 7: "number", 8: "number"}
+        {match: /\b(scoreboard +players +)(random)(?: +(?:(@(?:[aeprscv]|initiator))(?: *(\[.*?]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$)(?: +([^\s]+)(?: (-?\d+)(?: +(-?\d+))?)?)?)?/, 1: "command", 2: "subcommand", 3: "selector", 4: "selectorArgs", 5: "name", 6: "variable", 7: "number", 8: "number"}
 
         //匹配/scoreboard players
-        {match: /\b(scoreboard +players)(?:\x20+(\w+)(?:\x20+(?:(@(?:[aeprscv]|initiator))(?: *(\[.*]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$)(?:\x20+([^\s]+)(?:\x20+(-?\d+))?)?)?)?/, 1: "command", 2: "subcommand", 3: "selector", 4: "selectorArgs", 5: "name", 6: "variable", 7: "number"}
+        {match: /\b(scoreboard +players)(?:\x20+(\w+)(?:\x20+(?:(@(?:[aeprscv]|initiator))(?: *(\[.*?]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$)(?:\x20+([^\s]+)(?:\x20+(-?\d+))?)?)?)?/, 1: "command", 2: "subcommand", 3: "selector", 4: "selectorArgs", 5: "name", 6: "variable", 7: "number"}
 
         //匹配/scoreboard objectives
         {match: /\b(scoreboard +objectives)(?: +(\w+)(?: +([^\s]+)(?: +(\w+)(?: +([^\n]+))?)?)?)?/, 1: "command", 2: "subcommand", 3: "variable", 4: "meta", 5: "meta"}
         
         {//teleport /tp 有受害者
-        match:/\b(teleport|tp)(?: +(?:(@(?:[aeprscv]|initiator))(?: *(\[.*]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$))?(?: +(?:((?:(?:\^[\-\+]?\d+(?:\.\d+)?)|\^)(?: +(?:\^[\-\+]?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?[\-\+]?\d+(?:\.\d+)?)|~)(?: +(?:~?[\-\+]?\d+(?:\.\d+)?)| *~){0,2})(?: +(?:(~?[\-\+]?[0-9]+(?:\.[0-9]+)?|~) +(~?[\-\+]?[0-9]+(?:\.[0-9]+)?|~)|(facing)(?: +(?:((?:(?:\^[\-\+]?\d+(?:\.\d+)?)|\^)(?: +(?:\^[\-\+]?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?[\-\+]?\d+(?:\.\d+)?)|~)(?: +(?:~?[\-\+]?\d+(?:\.\d+)?)| *~){0,2})|(?:(@(?:[aeprscv]|initiator))(?: *(\[.*]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$)))?))?|(?:(@(?:[aeprscv]|initiator))(?: *(\[.*]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$))(?: +(?:(true|false)|(\S+)))?)?/
+        match:/\b(teleport|tp)(?: +(?:(@(?:[aeprscv]|initiator))(?: *(\[.*?]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$))?(?: +(?:((?:(?:\^[\-\+]?\d+(?:\.\d+)?)|\^)(?: +(?:\^[\-\+]?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?[\-\+]?\d+(?:\.\d+)?)|~)(?: +(?:~?[\-\+]?\d+(?:\.\d+)?)| *~){0,2})(?: +(?:(~?[\-\+]?[0-9]+(?:\.[0-9]+)?|~) +(~?[\-\+]?[0-9]+(?:\.[0-9]+)?|~)|(facing)(?: +(?:((?:(?:\^[\-\+]?\d+(?:\.\d+)?)|\^)(?: +(?:\^[\-\+]?\d+(?:\.\d+)?)| *\^){0,2}|(?:\b(?:~?[\-\+]?\d+(?:\.\d+)?)|~)(?: +(?:~?[\-\+]?\d+(?:\.\d+)?)| *~){0,2})|(?:(@(?:[aeprscv]|initiator))(?: *(\[.*?]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$)))?))?|(?:(@(?:[aeprscv]|initiator))(?: *(\[.*?]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$))(?: +(?:(true|false)|(\S+)))?)?/
         1: "command"
         2: "selector"
         3: "selectorArgs" 
@@ -192,14 +192,14 @@
         
         //匹配/tell
         {
-            start: {match: /\b(msg|w|tell)(?: +(?:(@(?:[aeprscv]|initiator))(?: *(\[.*]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$))/, 1: "command", 2: "selector", 3: "selectorArgs", 4: "name"}
+            start: {match: /\b(msg|w|tell)(?: +(?:(@(?:[aeprscv]|initiator))(?: *(\[.*?]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$))/, 1: "command", 2: "selector", 3: "selectorArgs", 4: "name"}
             end: {match: /(?m)$/}
             color: "string"
         }
         
         //匹配/replaceitem entity
         {
-            start: {match: /\b(replaceitem)(?: +(entity)(?: +(?:(@(?:[aeprscv]|initiator))(?: *(\[.*]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$)(?: +(?:(slot(?:\.(?:(?:weapon(?:\.(?:offhand|mainhand))?|armor(?:\.(?:chest|legs|feet|head))?|enderchest|hotbar|inventory|saddle|chest|equippable)))?)|([^\s]+))(?: +(\d+)(?: +(?:(keep|destroy) +)?(?:([A-Za-z0-9_:]{1,}))(?: +(\d+)(?: +(\d+))?)?)?)?)?)?)/, 1: "command", 2: "subcommand", 3: "selector", 4: "selectorArgs", 5: "name", 6: "meta", 7: "error", 8: "number", 9: "subcommand", 10: "item", 11: "number", 12: "variable" }
+            start: {match: /\b(replaceitem)(?: +(entity)(?: +(?:(@(?:[aeprscv]|initiator))(?: *(\[.*?]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$)(?: +(?:(slot(?:\.(?:(?:weapon(?:\.(?:offhand|mainhand))?|armor(?:\.(?:chest|legs|feet|head))?|enderchest|hotbar|inventory|saddle|chest|equippable)))?)|([^\s]+))(?: +(\d+)(?: +(?:(keep|destroy) +)?(?:([A-Za-z0-9_:]{1,}))(?: +(\d+)(?: +(\d+))?)?)?)?)?)?)/, 1: "command", 2: "subcommand", 3: "selector", 4: "selectorArgs", 5: "name", 6: "meta", 7: "error", 8: "number", 9: "subcommand", 10: "item", 11: "number", 12: "variable" }
             end: {match: /(?m)$/}
             contains: [
                 {builtin: #JAVA_QUOTED_STRING#}
@@ -225,7 +225,7 @@
             end: {match: /(?m)$/}
             contains: [
                 {
-                    start: {match: /(?:(@(?:[aeprscv]|initiator))(?: *(\[.*]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$)/, 1:"selector", 2: "selectorArgs", 3: "name" }
+                    start: {match: /(?:(@(?:[aeprscv]|initiator))(?: *(\[.*?]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$)/, 1:"selector", 2: "selectorArgs", 3: "name" }
                     end: {match:/(?m)$/}
                     contains: [
                         {
@@ -293,7 +293,7 @@
             end: {match: /(?m)$/}
             contains: [
                 {
-                    start: {match: /(?:(@(?:[aeprscv]|initiator))(?: *(\[.*]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$)/, 1:"selector", 2: "selectorArgs", 3: "name" }
+                    start: {match: /(?:(@(?:[aeprscv]|initiator))(?: *(\[.*?]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$)/, 1:"selector", 2: "selectorArgs", 3: "name" }
                     end: {match:/(?m)$/}
                     contains: [
                         {
@@ -369,7 +369,7 @@
             end: {match: /(?m)$/}
             contains: [
                 {
-                    start: {match: /(?:(@(?:[aeprscv]|initiator))(?: *(\[.*]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$)/, 1:"selector", 2: "selectorArgs", 3: "name" }
+                    start: {match: /(?:(@(?:[aeprscv]|initiator))(?: *(\[.*?]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$)/, 1:"selector", 2: "selectorArgs", 3: "name" }
                     end: {match:/(?m)$/}
                     contains: [
                         {
@@ -404,7 +404,7 @@
         }
         
         { //event
-            match: /\b(event)(?: +(?:(entity)|(\S+))(?: +(?:(@(?:[aeprscv]|initiator))(?: *(\[.*]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$)(?: +(\S+))?)?)/,
+            match: /\b(event)(?: +(?:(entity)|(\S+))(?: +(?:(@(?:[aeprscv]|initiator))(?: *(\[.*?]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$)(?: +(\S+))?)?)/,
             1: "command",
             2: "subcommand",
             3: "error",
@@ -415,7 +415,7 @@
         }
         
         { //clear
-            match: /\b(clear)(?: +(?:(@(?:[aeprscv]|initiator))(?: *(\[.*]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$)(?: +(\S+)(?: +(-?\d+)(?: +(-?\d+))?)?)?)?/,
+            match: /\b(clear)(?: +(?:(@(?:[aeprscv]|initiator))(?: *(\[.*?]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$)(?: +(\S+)(?: +(-?\d+)(?: +(-?\d+))?)?)?)?/,
              1: "command",
              2: "selector",
              3: "selectorArgs",
@@ -426,7 +426,7 @@
         }
         
         { //effect 这个好简单，复制/clear简单改改就弄好了
-             match: /\b(effect)(?: +(?:(@(?:[aeprscv]|initiator))(?: *(\[.*]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$)(?: +(\S+)(?: +(\d+)(?: +(\d+)(?: (?:(true|false)|(\S+))+)?)?)?)?)?/
+             match: /\b(effect)(?: +(?:(@(?:[aeprscv]|initiator))(?: *(\[.*?]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$)(?: +(\S+)(?: +(\d+)(?: +(\d+)(?: (?:(true|false)|(\S+))+)?)?)?)?)?/
              1: "command",
              2: "selector",
              3: "selectorArgs",
@@ -439,7 +439,7 @@
         }
         
         { //give
-            start: { match: /\b(give)(?: +(?:(@(?:[aeprscv]|initiator))(?: *(\[.*]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$)(?: +(\S+)(?: +(-?\d+)(?: +(-?\d+))?)?)?)?/,
+            start: { match: /\b(give)(?: +(?:(@(?:[aeprscv]|initiator))(?: *(\[.*?]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$)(?: +(\S+)(?: +(-?\d+)(?: +(-?\d+))?)?)?)?/,
              1: "command",
              2: "selector",
              3: "selectorArgs",
@@ -457,7 +457,7 @@
         }
         
         {//tag
-             match: /\b(tag)(?: +(?:(@(?:[aeprscv]|initiator))(?: *(\[.*]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$)(?: +(?:(?:(add|remove)(?: +(".*(?<!\\)"|\S+))?|(list))))?)?/,
+             match: /\b(tag)(?: +(?:(@(?:[aeprscv]|initiator))(?: *(\[.*?]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$)(?: +(?:(?:(add|remove)(?: +(".*(?<!\\)"|\S+))?|(list))))?)?/,
              1: "command",
              2: "selector",
              3: "selectorArgs",
@@ -475,7 +475,7 @@
             4: "variable"
         }
         { //gamemode
-            match: /\b(gamemode) +(?:(?:(@(?:[aeprscv]|initiator))(?: *(\[.*]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$)(?: +(s(?:pectator|urvival)?|c(?:reative)?|a(?:dventure)?|d(?:efault)?|\d+))?)/,
+            match: /\b(gamemode) +(?:(?:(@(?:[aeprscv]|initiator))(?: *(\[.*?]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$)(?: +(s(?:pectator|urvival)?|c(?:reative)?|a(?:dventure)?|d(?:efault)?|\d+))?)/,
             1: "command",
             2: "selector",
             3: "selectorArgs",
@@ -484,7 +484,7 @@
         }
         
         {//xp
-            match: /\b(xp)(?: +(?:(?:(-?\d+)(l|L))|(\d+))(?: +(?:(@(?:[aeprscv]|initiator))(?: *(\[.*]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$))?)?/,
+            match: /\b(xp)(?: +(?:(?:(-?\d+)(l|L))|(\d+))(?: +(?:(@(?:[aeprscv]|initiator))(?: *(\[.*?]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$))?)?/,
             1: "command",
             2: "number",
             3: "operator",
@@ -560,7 +560,7 @@
         }
         
         //匹配目标选择器
-        {match: /(@(?:[aeprscv]|initiator))(?: *(\[.*]))?(?=\s|$)/, 0: "selector", 1: "selectorArgs" }
+        {match: /(@(?:[aeprscv]|initiator))(?: *(\[.*?]))?(?=\s|$)/, 0: "selector", 1: "selectorArgs" }
 
         //匹配完整坐标
         {match:/(?:(?:\^[\-\+]?\d+(?:\.\d+)?)|\^)(?: +(?:\^[\-\+]?\d+(?:\.\d+)?)| *\^){2}|(?:\b(?:~?[\-\+]?\d+(?:\.\d+)?)|~)(?: +(?:~?[\-\+]?\d+(?:\.\d+)?)| *~){2}/, 0: "coords"}

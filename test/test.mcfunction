@@ -127,6 +127,8 @@ tp ^ ^+2.5 ^3
 ##bug
 tp ^ ~ ~
 
+tp @s [amwnwensmsnsns] ~ ~ ~ facing @s[] 
+
 function awansnndnd
 
 tp 244 191 134.2 ~-21.4 -87
