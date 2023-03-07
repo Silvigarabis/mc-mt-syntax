@@ -4,6 +4,8 @@
 //20221223更新
 //写好了
 //给各种关键词改了个名
+//20230308
+//更改了正则表达式字面量的匹配方式
 {
     name: ["Colour JavaScript", ".js", ".es", ".mjs", ".ts"]
     comment: {startsWith: "//"}
@@ -55,15 +57,16 @@
                 {match: /\$\{.*?\}/, 0: "strEscape"}
             ]
         }
-        // 正则表达式
-        {
-            color: "meta"
-            start: {match: "(=\\s*)/", 1: "default"}
-            end: {match: "(?m)/([img]*)|$", 1: "operator"}
-            contains: [
-                {match: "\\\\/", 0: "strEscape"}
-            ]
-        }
+        // // 正则表达式
+        // {
+            // color: "meta"
+            // start: {match: "(=\\s*)/", 1: "default"}
+            // end: {match: "(?m)/([img]*)|$", 1: "operator"}
+            // contains: [
+                // {match: "\\\\/", 0: "strEscape"}
+            // ]
+        // }
+        {match: /(?m)(\/.+\/)([gmi]+)?/, 1: "meta", 2: "operator"}
         //bigint
         {match: /\b(?:[1-9][0-9]*|0)n\b/, 0: "number"}
         //bigdecimal
