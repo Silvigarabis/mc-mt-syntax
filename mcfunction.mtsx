@@ -585,7 +585,7 @@
             "ability immutableworld worldbuilder"
             
             //原版
-            "camerashake fog music playanimation playsound stopsound"
+            "camerashake fog music playanimation playsound stopsound particle"
             "clearspawnpoint spawnpoint setworldspawn"
             "xp gamemode kick ride"
             "me tell tellraw title titleraw say msg"
