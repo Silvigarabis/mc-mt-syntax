@@ -57,12 +57,13 @@
         "comment-specific", #432f3d, #c3c3c3
         "comment-default", #8c8c8c, #808080
         "comment-error" > "error"
-        
+        "comment-line-highlight-background", #3ea8a8, #0d1824
+
         "command", #008b45, #9acd32
         "command-unknown", #8470ff, #CC7832
         "subcommand", #4169e1, #8876BA
         
-        "selector", #9acd32, #eec900
+        "selector", #759e1b, #eec900
         "selectorArgs", #9e880d, #6080b0
 
         "variable", #407095, #6A8099
@@ -82,7 +83,7 @@
         "entityId" > "identifier"
         "eventId" > "identifier2"
         
-        "coords", #66ccff, #66ccff
+        "coords", #4c99bf, #66ccff
         "position" > "coords"
         "rotation" > "coords"
         
@@ -110,8 +111,12 @@
   
     //匹配自己设置的特殊注释(可能用不上)
     lineBackground: {
-       match: /^#.*$/,
+       match: /^#-.*$/,
        color: "comment-line-background",
+    }
+    lineBackground: {
+       match: /^#\+.*$/,
+       color: "comment-line-highlight-background",
     }
 
     //检测错误注释(那种井号前边有空格的注释
@@ -122,7 +127,8 @@
 
     contains: [
         
-        { match: /(?m)^#(var|def|set|[?@#-+\/\*:!;]+).*$/, 0: "comment-specific" }
+        // { match: /(?m)^#\+.*$/, 0: "comment-highlight" }
+        { match: /(?m)^#\+?(var|def|set|[?@#-+\/\*:!;]+).*$/, 0: "comment-specific" }
         { match: /(?m)^#.*$/, 0: "comment-default" }
         
         //匹配/execute
