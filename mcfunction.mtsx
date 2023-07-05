@@ -31,7 +31,7 @@
 //20230117
 //列出已经更新了的命令匹配，因为我不知道还有啥没更新
 //execute, say, me, w, msg, tell, tellraw titleraw scoreboard function replaceitem event title clear give 
-//tag gamerule  gamemode xp
+//tag gamerule gamemode xp
 
 //准备更新以下指令
 // summon tp effect
@@ -47,6 +47,17 @@
 //20230308
 //处理了一些奇葩坐标匹配
 //把注释的背景颜色改了
+
+//忘了是什么时间，可能是6月的某天
+//修复旧版execute提前结束了execute的匹配的错误
+
+//20230705
+//更新了一些颜色
+//再次修改注释背景色
+//默认情况下不添加注释背景色
+//只有在注释起始于#+或者#-的时候，才会添加对应的背景色
+
+//更新了以下命令：camera fill setblock
 
 {
     name: ["Minecraft Function", ".mcfunction"]
@@ -71,6 +82,8 @@
         "funName", #C57633, #FFC66D
         
         "meta", #9e880d, #bbb529
+        
+        "time" > "number"
         
         "boolean" > "variable"
         "name" > "meta"
@@ -523,6 +536,64 @@
             5: "name",
             6: "name",
             7: "position",
+        }
+        
+        
+        {//fill
+        //仍然兼容数字data作为参数，但是这只是为了兼容渲染，你不应该在命令中继续使用数字data
+            match: /\b(fill)(?: +((?:(?:'\^[\-\+]?\d+(?:\.\d+)?)|\^)(?: +(?:\^[\-\+]?\d+(?:\.\d+)?)| *\^){0,2}|(?:(?:~?[\-\+]?\d+(?:\.\d+)?)|~)(?:(?:(?<=(?:(?:~?[\-\+]?\d{0,99}(?:\.\d{0,99})?)|~))| +)(?:~?[\-\+]?\d+(?:\.\d+)?)| *~){0,2})(?: *((?:(?:'\^[\-\+]?\d+(?:\.\d+)?)|\^)(?: +(?:\^[\-\+]?\d+(?:\.\d+)?)| *\^){0,2}|(?:(?:~?[\-\+]?\d+(?:\.\d+)?)|~)(?:(?:(?<=(?:(?:~?[\-\+]?\d{0,99}(?:\.\d{0,99})?)|~))| +)(?:~?[\-\+]?\d+(?:\.\d+)?)| *~){0,2})(?: +([A-Za-z_][\w:-]*)(?: +(-?\d+|\[.*?\](?=\s|$))(?: +(?:(replace|outline|keep|hollow|destroy)|(\S+))(?:(?<=replace) +([A-Za-z_][\w:-]*)(?: +(-?\d+|\[.*?\](?=\s|$)))?)?)?)?)?)?)/,
+            1: "command",
+            2: "position",
+            3: "position",
+            4: "identifier",
+            5: "variable"
+            6: "meta",
+            7: "error",
+            8: "identifier",
+            9: "variable",
+        }
+        
+        {
+            match: /\b(setblock)(?: +((?:(?:'\^[\-\+]?\d+(?:\.\d+)?)|\^)(?: +(?:\^[\-\+]?\d+(?:\.\d+)?)| *\^){0,2}|(?:(?:~?[\-\+]?\d+(?:\.\d+)?)|~)(?:(?:(?<=(?:(?:~?[\-\+]?\d{0,99}(?:\.\d{0,99})?)|~))| +)(?:~?[\-\+]?\d+(?:\.\d+)?)| *~){0,2})(?: +([A-Za-z_][\w:-]*)(?: +(-?\d+|\[.*?\](?=\s|$))(?: +(?:(replace|keep|destroy)|(\S+)))?)?)?)/,
+            1: "command",
+            2: "position",
+            3: "block",
+            4: "variable",
+            5: "meta",
+            6: "error",
+        }
+        
+        {
+            match: /\b(camera)(?: +(?:(@(?:[aeprscv]|initiator))(?: *(\[.*?]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$)(?: +(?:(clear|fade|set)|(\S+))(?:(?<=set) +(\S+)(?: +(ease)(?: +(\d+(?:\.\d+)?)(?: +(?:(linear|spring|in_quad|out_quad|in_out_quad|in_cubic|out_cubic|in_out_cubic|in_quart|out_quart|in_out_quart|in_quint|out_quint|in_out_quint|in_sine|out_sine|in_out_sine|in_expo|out_expo|in_out_expo|in_circ|out_circ|in_out_circ|in_bounce|out_bounce|in_out_bounce|in_back|out_back|in_out_back|in_elastic|out_elastic|in_out_elastic)|(\S+)))?)?)?(?:(?: +(default)|(?: +(pos)(?: +((?:(?:'\^[\-\+]?\d+(?:\.\d+)?)|\^)(?: +(?:\^[\-\+]?\d+(?:\.\d+)?)| *\^){0,2}|(?:(?:~?[\-\+]?\d+(?:\.\d+)?)|~)(?:(?:(?<=(?:(?:~?[\-\+]?\d{0,99}(?:\.\d{0,99})?)|~))| +)(?:~?[\-\+]?\d+(?:\.\d+)?)| *~){0,2}))?)?(?: +(?:(facing)(?: +(?:(?:(@(?:[aeprscv]|initiator))(?: *(\[.*?]))?|(".*(?<!\\)"|[^0-9\s\^\-]\S*))(?=\s|$)|((?:(?:'\^[\-\+]?\d+(?:\.\d+)?)|\^)(?: +(?:\^[\-\+]?\d+(?:\.\d+)?)| *\^){0,2}|(?:(?:~?[\-\+]?\d+(?:\.\d+)?)|~)(?:(?:(?<=(?:(?:~?[\-\+]?\d{0,99}(?:\.\d{0,99})?)|~))| +)(?:~?[\-\+]?\d+(?:\.\d+)?)| *~){0,2})))?|(rot)(?: +(~?[\-\+]?[0-9]+(?:\.[0-9]+)?|~))?))?))?|(?<=fade)(?: +(time)(?: +(\d+(?:\.\d+)?)(?: +(\d+(?:\.\d+)?)(?: (\d+(?:\.\d+)?))?)?)?)?(?: +(color)(?: +(\d+)(?: +(\d+)(?: (\d+))?)?)?)?)?)?)?/,
+            1: "command",
+            2: "selector",
+            3: "selectorArgs",
+            4: "name",
+            5: "subcommand", //fade clear set
+            6: "error",
+            7: "meta",
+            8: "subcommand", //ease
+            9: "time",
+            10: "meta", //easeType
+            11: "error",
+            12: "subcommand", //default
+            13: "subcommand", //pos
+            14: "position",
+            15: "subcommand", //facing
+            16: "selector",
+            17: "selectorArgs",
+            18: "name",
+            19: "position",
+            20: "subcommand", //rot
+            21: "rotation",
+            22: "subcommand", //time
+            23: "number",
+            24: "number",
+            25: "number",
+            26: "subcommand", //color
+            27: "number",
+            28: "number",
+            29: "number"
         }
         
         //匹配字符串
