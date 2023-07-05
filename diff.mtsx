@@ -1,5 +1,5 @@
 {
-    name: ["Diff text", ".diff"]
+    name: ["Diff text", ".diff", ".patch"]
     colors: [
         "methodHeader", #FFEDED, #443034
         "keyword", #001BA3, #CC7832

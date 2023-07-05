@@ -8,7 +8,7 @@
 //更改了正则表达式字面量的匹配方式
 {
     name: ["Colour JavaScript", ".js", ".es", ".mjs", ".ts"]
-    comment: {startsWith: "//"}
+    comment: {startsWith: "//", addToContains: false}
     colors: [
         "methodHeader", #FFEDED, #443034
         "keyword", #001BA3, #CC7832
@@ -22,7 +22,7 @@
         "functionName" > "meta"
         "namespaceKeyword" > "error"
         "accessKeyword" > "label"
-        "normalVariableLike", #556B2F, #B8860B
+        "normalVariableLike", #556B2F, #bfb49b
     ]
     contains: [
         {
@@ -40,6 +40,7 @@
             ]
             color: "comment"
         }
+        {match: /(?m)\/\/.*$/, 0: "comment"}
         {
             start: {match: "/\\*"}
             end: {match: "\\*/"}
@@ -66,7 +67,7 @@
                 // {match: "\\\\/", 0: "strEscape"}
             // ]
         // }
-        {match: /(?m)(\/.+\/)([gmi]+)?/, 1: "meta", 2: "operator"}
+        {match: /(?m)((?<!\\)\/.+?(?<!\\)\/(?!\/))([gmi]+)?/, 1: "meta", 2: "operator"}
         //bigint
         {match: /\b(?:[1-9][0-9]*|0)n\b/, 0: "number"}
         //bigdecimal
@@ -87,7 +88,7 @@
         }
         // //{match: /(?m)(import)[\t ]+?(?:\{\s*(?:\S+,?\s*)*?\}\s*from)?(?=.*$|.*;)/, 
         {match: keywordsToRegex(
-                "class enum import interface"
+                "class enum import interface type"
             ), 0: "typeDefineKeyword"
         }
         {match: /\bfrom\b(?=[\t ]+(".*")($|;))/, 0: "typeCheckKeyword"}
