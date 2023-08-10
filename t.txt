@@ -1,0 +1,51 @@
+mcfunction是在模组制作中可能会编写的一种文件，这种文件包含了一系列的指令。
+而在MT管理器的2.11.0版本，更新了自定义语法高亮，允许用户通过编写正则表达式的形式为文本添加高亮显示。
+于是我根据原版指令的样式，编写了可供mcfunction文件使用的语法高亮。
+
+目前已经支持了一部分指令，但还有未完成的部分。
+此作品使用GPLv3协议授权许可。
+
+已提供较为完整的支持的指令：
+/execute（支持旧版，但默认不启用）
+/scoreboard 
+/replaceitem
+/tp （以及别名/teleport ）
+/tag
+...还有更多
+[spoiler]- /event
+- /tell
+- /fill
+- /camera (测试版的新指令)
+- /setblock
+- /tellraw
+- /title
+- /titleraw[/spoiler]
+
+特点：
+动态高亮：大部分情况下，在命令没有编写完整的时候就可为其着色
+
+目前无法实现的功能：
+为目标选择器参数、方块状态等提供高亮
+
+未支持的指令：
+/clone
+/loot
+/ride
+/spreadplayers
+仍有很多……我会不断更新的
+
+效果展示：[spoiler][attachimg]314685[/attachimg][attachimg]314686[/attachimg][attachimg]314687[/attachimg][attachimg]314688[/attachimg][attachimg]314689[/attachimg][attachimg]314690[/attachimg][attachimg]314691[/attachimg][/spoiler]
+
+
+最新版下载链接：[attach]314692[/attach]
+
+
+更新日志：[spoiler]20230705：
+隐藏了旧版/execute匹配，需要手动编辑启用
+新增/setblock、/fill、/camera命令支持
+
+20230308：
+匹配一些奇葩坐标
+修复新旧版execute命令的兼容[/spoiler]
+
+mcfunction addon MT管理器 模组开发

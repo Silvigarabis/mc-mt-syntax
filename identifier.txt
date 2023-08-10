@@ -1,1 +1,6 @@
 [A-Za-z_][\w:-]*
+
+# extra version
+[^\d\s]\S*?:\S+
+
+929292skdkdkdk:jejeje
