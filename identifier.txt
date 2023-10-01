@@ -4,3 +4,9 @@
 [^\d\s]\S*?:\S+
 
 929292skdkdkdk:jejeje
+
+# name as identifier
+\S+
+
+#宽泛字符串名
+".*(?<!\\)"|[^0-9\s\^\-]\S*

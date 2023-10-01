@@ -140,3 +140,5 @@ replaceitem entity @s slot.weapon
 @s[name="j2j2j, "]
 
 effect aajwjw nsnwnwnw 255 245 false
+
+structure load men3nene ~~~ 0_degrees
