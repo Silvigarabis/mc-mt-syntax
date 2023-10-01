@@ -1,0 +1,31 @@
+{
+    name: ["YAML Powered", ".yml", ".yaml"]
+    comment: {startsWith: "#", addToContains: false}
+    colors: [
+        "specialVariable" > "constant"
+        "normalVariableLike", #556B2F, #bfb49b
+    ]
+    contains: [
+        //修改的注释匹配，只有与其他内容有间隔的 #注释 才会上色
+        {match: /(?m)(?<=^| )#.*$/, 0: "comment"}
+        {
+            color: "string"
+            start: {match: /'/}
+            end: {match: /(?m)('(?!')|$)/}
+            contains: [
+                {match: /''/, 0: "strEscape"}
+            ]
+        }
+        {builtin: #DOUBLE_QUOTED_STRING#}
+        
+        //括号之类的东西，让他颜色变正常
+        {match: /[\{\}\[\]]/, 0: "default"} 
+        
+        //表示列表的-号
+        {match: /(?m)(?<=^| )-(?= |$)/, 0: "operator"} 
+        {match: /(?m)\b([^\s:]+ *)(:)( *!![a-z]+)?/, 1: "propKey", 2: "operator", 3: "type"}
+        {match: /(?<=(?:-|:) +)(?:(true|false|null|~)|(\S+))/, 1: "specialVariable", 2: "normalVariableLike"}
+        {match: /[&*]\w+/, 0: "label"}
+        {number: "2|10|16|F|E|_"}
+    ]
+}
