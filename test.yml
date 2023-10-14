@@ -1,0 +1,7 @@
+# 注释（可以正常上色）
+# 第5行不行，因为另一个正则也可以匹配到它
+
+data0:
+   #prop0: value0.old
+   prop0: value0
+   prop1: value1
